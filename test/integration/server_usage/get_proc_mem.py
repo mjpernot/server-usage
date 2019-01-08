@@ -1,0 +1,121 @@
+#!/usr/bin/python
+# Classification (U)
+
+"""Program:  get_proc_mem.py
+
+    Description:  Integration testing of get_proc_mem in server_usage.py.
+
+    Usage:
+        test/integration/server_usage/get_proc_mem.py
+
+    Arguments:
+        None
+
+"""
+
+# Libraries and Global Variables
+
+# Standard
+import sys
+import os
+
+if sys.version_info < (2, 7):
+    import unittest2 as unittest
+else:
+    import unittest
+
+# Third-party
+import psutil
+
+# Local
+sys.path.append(os.getcwd())
+import server_usage
+import lib.gen_libs as gen_libs
+import version
+
+# Version
+__version__ = version.__version__
+
+
+def capture_mem(mem, **kwargs):
+
+    """Function:  capture_mem
+
+    Description:  Used to test the results returned from get_prco_mem.
+
+    Arguments:
+        (input) mem -> Memory threshold for a process, in MBs.
+        (input) **kwargs:
+            None
+        (output) -> List of processes that meet the memory threshold.
+
+    """
+
+    return [{"pid": p.pid, "ppid": p.ppid(), "proc": p.info["name"],
+             "uss_mem": p.info["memory_full_info"].uss,
+             "per_used": "%.2f" % p.memory_percent()}
+            for p in psutil.process_iter(attrs=["name", "memory_full_info"])
+            if p.info["memory_full_info"].uss > mem * 1024 * 1024]
+
+
+class UnitTest(unittest.TestCase):
+
+    """Class:  UnitTest
+
+    Description:  Class which is a representation of a unit testing.
+
+    Super-Class:  unittest.TestCase
+
+    Sub-Classes:  None
+
+    Methods:
+        setUp -> Unit testing initilization.
+        test_pass_string -> Test which passes a string for the memory argument.
+        test_get_proc_mem -> Test data is returned in correct format.
+
+    """
+
+    def setUp(self):
+
+        """Function:  setUp
+
+        Description:  Initialization for unit testing.
+
+        Arguments:
+            None
+
+        """
+
+    def test_pass_string(self):
+
+        """Function:  test_pass_string
+
+        Description:  Test which passes a string for the memory argument.
+
+        Arguments:
+            None
+
+        """
+
+        test_data = capture_mem(90)
+
+        self.assertEqual(server_usage.get_proc_mem('90'), test_data)
+
+    def test_get_proc_mem(self):
+
+        """Function:  test_get_proc_mem
+
+        Description:  Test data is returned in correct format.
+
+        Arguments:
+            None
+
+        """
+
+        test_data = capture_mem(90)
+
+        self.assertEqual(server_usage.get_proc_mem(90), test_data)
+
+
+if __name__ == "__main__":
+    unittest.main()

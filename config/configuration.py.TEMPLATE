@@ -1,0 +1,39 @@
+# Configuration file
+# Classification (U)
+# Unclassified until filled.
+
+# memory_threshold is amount of memory required before the process is recorded.
+# Value is in Megabytes.
+memory_threshold = 100
+
+# Mongo database section.
+# User connection information.
+user = "USER_NAME"
+passwd = "USER_PASSWORD"
+
+# Database host information.
+host = "HOST_IP"
+name = "HOSTNAME"
+
+# Mongo database port (default is 27017)
+port = 27017
+
+# Mongo configuration settings
+conf_file = None
+
+# Authentication required:  True|False
+auth = True
+
+# Replica Set Mongo configuration settings.
+# Replica set name.  Set to None if not connectin to a replica set.
+repset = "REPLICA_SET_NAME"
+
+# Replica host listing.  List of mongo databases in replica set.  Set to None if not connectin to a replica set.
+repset_hosts = "HOST1:PORT, HOST2:PORT, [...]"
+
+# Database to authentication to.
+db_auth = "AUTHENTICATION_DATABASE"
+
+# Database and Collection information
+db = "sysmon"
+coll = "mem_usage"

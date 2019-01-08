@@ -1,0 +1,239 @@
+#!/usr/bin/python
+# Classification (U)
+
+"""Program:  main.py
+
+    Description:  Unit testing of main in server_usage.py.
+
+    Usage:
+        test/unit/server_usage/main.py
+
+    Arguments:
+        None
+
+"""
+
+# Libraries and Global Variables
+
+# Standard
+import sys
+import os
+
+if sys.version_info < (2, 7):
+    import unittest2 as unittest
+else:
+    import unittest
+
+# Third-party
+import mock
+
+# Local
+sys.path.append(os.getcwd())
+import server_usage
+import lib.gen_libs as gen_libs
+import version
+
+# Version
+__version__ = version.__version__
+
+
+class UnitTest(unittest.TestCase):
+
+    """Class:  UnitTest
+
+    Description:  Class which is a representation of a unit testing.
+
+    Super-Class:  unittest.TestCase
+
+    Sub-Classes:  None
+
+    Methods:
+        setUp -> Unit testing initilization.
+        test_dir_chk_crt_false -> Test with arg_dir_chk_crt returns False.
+        test_dir_chk_crt_true -> Test with arg_dir_chk_crt returns True.
+        test_require_false -> Test with arg_require returns False.
+        test_require_true -> Test with arg_require returns True.
+        test_root_run_true -> Test with root_run returns True.
+        test_root_run_false -> Test with root_run returns False.
+        test_help_false ->  Test with help_func returns False.
+        test_help_true -> Test with help_func returns True.
+
+    """
+
+    def setUp(self):
+
+        """Function:  setUp
+
+        Description:  Initialization for unit testing.
+
+        Arguments:
+            None
+
+        """
+
+        self.args = {"-c": "config_file", "-d": "config_dir"}
+
+    @mock.patch("server_usage.run_program")
+    @mock.patch("server_usage.arg_parser")
+    @mock.patch("server_usage.gen_libs")
+    def test_dir_chk_crt_false(self, mock_lib, mock_arg, mock_run):
+
+        """Function:  test_dir_chk_crt_false
+
+        Description:  Test with arg_dir_chk_crt returns False.
+
+        Arguments:
+            mock_lib -> Mock Ref:  server_usage.gen_libs
+            mock_arg -> Mock Ref:  server_usage.arg_parser
+            mock_run -> Mock Ref:  server_usage.run_program
+
+        """
+
+        mock_lib.help_func.return_value = False
+        mock_lib.root_run.return_value = True
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_dir_chk_crt.return_value = True
+        mock_run.return_value = True
+
+        self.assertFalse(server_usage.main())
+
+    @mock.patch("server_usage.arg_parser")
+    @mock.patch("server_usage.gen_libs")
+    def test_dir_chk_crt_true(self, mock_lib, mock_arg):
+
+        """Function:  test_dir_chk_crt_true
+
+        Description:  Test with arg_dir_chk_crt returns True.
+
+        Arguments:
+            mock_lib -> Mock Ref:  server_usage.gen_libs
+            mock_arg -> Mock Ref:  server_usage.arg_parser
+
+        """
+
+        mock_lib.help_func.return_value = False
+        mock_lib.root_run.return_value = True
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_dir_chk_crt.return_value = True
+
+        self.assertFalse(server_usage.main())
+
+    @mock.patch("server_usage.arg_parser")
+    @mock.patch("server_usage.gen_libs")
+    def test_require_false(self, mock_lib, mock_arg):
+
+        """Function:  test_require_false
+
+        Description:  Test with arg_require returns False.
+
+        Arguments:
+            mock_lib -> Mock Ref:  server_usage.gen_libs
+            mock_arg -> Mock Ref:  server_usage.arg_parser
+
+        """
+
+        mock_lib.help_func.return_value = False
+        mock_lib.root_run.return_value = True
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_dir_chk_crt.return_value = True
+
+        self.assertFalse(server_usage.main())
+
+    @mock.patch("server_usage.arg_parser")
+    @mock.patch("server_usage.gen_libs")
+    def test_require_true(self, mock_lib, mock_arg):
+
+        """Function:  test_require_true
+
+        Description:  Test with arg_require returns True.
+
+        Arguments:
+            mock_lib -> Mock Ref:  server_usage.gen_libs
+            mock_arg -> Mock Ref:  server_usage.arg_parser
+
+        """
+
+        mock_lib.help_func.return_value = False
+        mock_lib.root_run.return_value = True
+        mock_arg.arg_require.return_value = True
+
+        self.assertFalse(server_usage.main())
+
+    @mock.patch("server_usage.arg_parser")
+    @mock.patch("server_usage.gen_libs")
+    def test_root_run_true(self, mock_lib, mock_arg):
+
+        """Function:  test_root_run_true
+
+        Description:  Test with root_run returns True.
+
+        Arguments:
+            mock_lib -> Mock Ref:  server_usage.gen_libs
+            mock_arg -> Mock Ref:  server_usage.arg_parser
+
+        """
+
+        mock_lib.help_func.return_value = False
+        mock_lib.root_run.return_value = True
+        mock_arg.arg_require.return_value = True
+
+        self.assertFalse(server_usage.main())
+
+    @mock.patch("server_usage.gen_libs")
+    def test_root_run_false(self, mock_lib):
+
+        """Function:  test_root_run_false
+
+        Description:  Test with root_run returns False.
+
+        Arguments:
+            mock_lib -> Mock Ref:  server_usage.gen_libs
+
+        """
+
+        mock_lib.help_func.return_value = False
+        mock_lib.root_run.return_value = False
+
+        with gen_libs.no_std_out():
+            self.assertFalse(server_usage.main())
+
+    @mock.patch("server_usage.gen_libs")
+    def test_help_false(self, mock_lib):
+
+        """Function:  test_help_false
+
+        Description:  Test with help_func returns False.
+
+        Arguments:
+            mock_lib -> Mock Ref:  server_usage.gen_libs
+
+        """
+
+        mock_lib.help_func.return_value = False
+        mock_lib.root_run.return_value = False
+
+        with gen_libs.no_std_out():
+            self.assertFalse(server_usage.main())
+
+    @mock.patch("server_usage.gen_libs.help_func")
+    @mock.patch("server_usage.arg_parser.arg_parse2")
+    def test_help_true(self, mock_arg, mock_help):
+
+        """Function:  test_help_true
+
+        Description:  Test with help_func returns True.
+
+        Arguments:
+            mock_arg -> Mock Ref:  server_usage.arg_parser.arg_parse2
+            mock_help -> Mock Ref:  server_usage.gen_libs.help_func
+
+        """
+
+        mock_arg.return_value = self.args
+        mock_help.return_value = True
+
+        self.assertFalse(server_usage.main())
+
+
+if __name__ == "__main__":
+    unittest.main()
