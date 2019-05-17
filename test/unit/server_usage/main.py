@@ -83,16 +83,14 @@ class UnitTest(unittest.TestCase):
         Description:  Test with arg_dir_chk_crt returns False.
 
         Arguments:
-            mock_lib -> Mock Ref:  server_usage.gen_libs
-            mock_arg -> Mock Ref:  server_usage.arg_parser
-            mock_run -> Mock Ref:  server_usage.run_program
+            None
 
         """
 
         mock_lib.help_func.return_value = False
         mock_lib.root_run.return_value = True
         mock_arg.arg_require.return_value = False
-        mock_arg.arg_dir_chk_crt.return_value = True
+        mock_arg.arg_dir_chk_crt.return_value = False
         mock_run.return_value = True
 
         self.assertFalse(server_usage.main())
@@ -106,8 +104,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test with arg_dir_chk_crt returns True.
 
         Arguments:
-            mock_lib -> Mock Ref:  server_usage.gen_libs
-            mock_arg -> Mock Ref:  server_usage.arg_parser
+            None
 
         """
 
@@ -127,8 +124,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test with arg_require returns False.
 
         Arguments:
-            mock_lib -> Mock Ref:  server_usage.gen_libs
-            mock_arg -> Mock Ref:  server_usage.arg_parser
+            None
 
         """
 
@@ -148,8 +144,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test with arg_require returns True.
 
         Arguments:
-            mock_lib -> Mock Ref:  server_usage.gen_libs
-            mock_arg -> Mock Ref:  server_usage.arg_parser
+            None
 
         """
 
@@ -168,8 +163,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test with root_run returns True.
 
         Arguments:
-            mock_lib -> Mock Ref:  server_usage.gen_libs
-            mock_arg -> Mock Ref:  server_usage.arg_parser
+            None
 
         """
 
@@ -187,7 +181,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test with root_run returns False.
 
         Arguments:
-            mock_lib -> Mock Ref:  server_usage.gen_libs
+            None
 
         """
 
@@ -205,7 +199,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test with help_func returns False.
 
         Arguments:
-            mock_lib -> Mock Ref:  server_usage.gen_libs
+            None
 
         """
 
@@ -224,8 +218,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test with help_func returns True.
 
         Arguments:
-            mock_arg -> Mock Ref:  server_usage.arg_parser.arg_parse2
-            mock_help -> Mock Ref:  server_usage.gen_libs.help_func
+            None
 
         """
 

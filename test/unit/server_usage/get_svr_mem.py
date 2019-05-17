@@ -78,7 +78,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test data is returned in correct format.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.virtual_memory
+            None
 
         """
 

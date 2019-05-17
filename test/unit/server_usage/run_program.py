@@ -179,12 +179,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test run_program function.
 
         Arguments:
-            mock_class -> Mock Ref:  server_usage.gen_class
-            mock_load -> Mock Ref:  server_usage.gen_libs.load_module
-            mock_info -> Mock Ref:  server_usage.get_svr_info
-            mock_mem -> Mock Ref:  server_usage.get_svr_mem
-            mock_proc -> Mock Ref:  server_usage.get_proc_mem
-            mock_post -> Mock Ref:  server_usage.post_process
+            None
 
         """
 

@@ -176,8 +176,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test which passes a string for the memory argument.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.process_iter
-            mock_str -> Mock Ref:  server_usage.gen_libs.str_2_type
+            None
 
         """
 
@@ -196,7 +195,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test which passes a list for the memory argument.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.process_iter
+            None
 
         """
 
@@ -214,7 +213,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test less then zero is passed for memory setting.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.process_iter
+            None
 
         """
 
@@ -232,7 +231,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test where default setting is used.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.process_iter
+            None
 
         """
 
@@ -250,7 +249,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test where zero memory setting is checked for.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.process_iter
+            None
 
         """
 
@@ -269,7 +268,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test where multiple rows are returned.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.process_iter
+            None
 
         """
 
@@ -287,7 +286,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test where one row is returned.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.process_iter
+            None
 
         """
 
@@ -305,7 +304,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test where zero rows are returned.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.process_iter
+            None
 
         """
 
@@ -323,7 +322,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test data is returned in correct format.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.process_iter
+            None
 
         """
 
