@@ -70,7 +70,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.proc_data = "Data String"
+        self.proc_data = {"Data": "String"}
 
         Cfg = collections.namedtuple("Cfg", "db coll")
         self.cfg = Cfg("database", "collection")
@@ -83,12 +83,11 @@ class UnitTest(unittest.TestCase):
         Description:  Test with printing formatted data.
 
         Arguments:
-            mock_display -> Mock Ref:  server_usage.gen_libs.display_data
+            None
 
         """
 
         args_array = {"-f": True}
-
         mock_display.return_value = True
 
         self.assertFalse(server_usage.post_process(self.proc_data,
@@ -168,12 +167,11 @@ class UnitTest(unittest.TestCase):
         Description:  Test with mongo option set to true.
 
         Arguments:
-            mock_mongo -> Mock Ref:  server_usage.mongo_libs.ins_doc
+            None
 
         """
 
         args_array = {"-n": True, "-m": True}
-
         mock_mongo.return_value = True
 
         self.assertFalse(server_usage.post_process(self.proc_data, args_array,
