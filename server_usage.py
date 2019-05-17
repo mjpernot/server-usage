@@ -170,8 +170,10 @@ def post_process(proc_data, args_array, cfg, **kwargs):
 
     """
 
-    if "-n" not in args_array:
+    proc_data = dict(proc_data)
+    args_array = dict(args_array)
 
+    if "-n" not in args_array:
         if "-f" in args_array:
             gen_libs.display_data(proc_data)
 

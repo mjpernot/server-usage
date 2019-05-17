@@ -7,6 +7,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 ## [1.0.1] - 2019-05-17
 ### Fixed
 - run_program:  Fixed problem with mutable default arguments issue.
+- post_process:  Fixed problem with mutable default arguments issue.
 
 
 ## [1.0.0] - 2019-03-05
