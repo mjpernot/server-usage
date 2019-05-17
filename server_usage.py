@@ -100,8 +100,6 @@ def get_svr_info(server, **kwargs):
 
     Arguments:
         (input) server -> Instance of the Server class.
-        (input) **kwargs:
-            None
         (output) -> Dictionary holding the basic server information.
 
     """
@@ -118,8 +116,6 @@ def get_svr_mem(**kwargs):
     Description:  Retrieve and return server memory information and status.
 
     Arguments:
-        (input) **kwargs:
-            None
         (output) -> Dictionary holding the basic server information.
 
     """
@@ -140,8 +136,6 @@ def get_proc_mem(mem_threshold=100, **kwargs):
 
     Arguments:
         (input) mem_threshold -> Memory threshold for a process, in MBs.
-        (input) **kwargs:
-            None
         (output) -> List of processes that meet the memory threshold.
 
     """
@@ -170,11 +164,9 @@ def post_process(proc_data, args_array, cfg, **kwargs):
         requested.
 
     Arguments:
-        (input) proc_data -> Process data in dictionary format.
-        (input) args_array -> Dict of command line options and values
+        (input) proc_data -> Dictionary of process data.
+        (input) args_array -> Dictionary of command line options and values.
         (input) cfg -> Configuration module settings.
-        (input) **kwargs:
-            None
 
     """
 
@@ -198,9 +190,7 @@ def run_program(args_array, **kwargs):
         Create a program lock to prevent other instantiations from running.
 
     Arguments:
-        (input) args_array -> Dict of command line options and values.
-        (input) **kwargs:
-            None
+        (input) args_array -> Dictionary of command line options and values.
 
     """
 
