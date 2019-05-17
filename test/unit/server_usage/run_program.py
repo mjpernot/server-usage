@@ -145,6 +145,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_programlock_fail -> Test ProgramLock fails to lock.
         test_run_program -> Test run_program function.
 
     """
@@ -164,6 +165,27 @@ class UnitTest(unittest.TestCase):
         self.cfg = Cfg(100)
 
         self.args = {"-c": "config_file", "-d": "config_dir"}
+
+    @mock.patch("server_usage.gen_class.ProgramLock")
+    @mock.patch("server_usage.gen_libs.load_module")
+    @mock.patch("server_usage.gen_class.System")
+    def test_programlock_fail(self, mock_class, mock_load, mock_lock):
+
+        """Function:  test_programlock_fail
+
+        Description:  Test ProgramLock fails to lock.
+
+        Arguments:
+            None
+
+        """
+
+        mock_lock.side_effect = server_usage.gen_class.SingleInstanceException
+        mock_load = self.cfg
+        mock_class.return_value = System()
+
+        with gen_libs.no_std_out():
+            self.assertFalse(server_usage.run_program(self.args))
 
     @mock.patch("server_usage.post_process")
     @mock.patch("server_usage.get_proc_mem")
