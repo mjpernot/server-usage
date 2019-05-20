@@ -34,7 +34,6 @@ import server_usage
 import lib.gen_libs as gen_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -65,9 +64,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        Server = collections.namedtuple("Server", "total used percent")
-        self.svr = Server(500, 250, 50)
-
+        server = collections.namedtuple("Server", "total used percent")
+        self.svr = server(500, 250, 50)
         self.test_data = {"tot_mem": 500, "mem_used": 250, "mem_per": 50}
 
     @mock.patch("server_usage.psutil.virtual_memory")
