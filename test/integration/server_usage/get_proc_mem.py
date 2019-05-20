@@ -33,7 +33,6 @@ import server_usage
 import lib.gen_libs as gen_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -45,8 +44,6 @@ def capture_mem(mem, **kwargs):
 
     Arguments:
         (input) mem -> Memory threshold for a process, in MBs.
-        (input) **kwargs:
-            None
         (output) -> List of processes that meet the memory threshold.
 
     """
