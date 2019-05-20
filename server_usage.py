@@ -100,8 +100,6 @@ def get_svr_info(server, **kwargs):
 
     Arguments:
         (input) server -> Instance of the Server class.
-        (input) **kwargs:
-            None
         (output) -> Dictionary holding the basic server information.
 
     """
@@ -118,8 +116,6 @@ def get_svr_mem(**kwargs):
     Description:  Retrieve and return server memory information and status.
 
     Arguments:
-        (input) **kwargs:
-            None
         (output) -> Dictionary holding the basic server information.
 
     """
@@ -140,8 +136,6 @@ def get_proc_mem(mem_threshold=100, **kwargs):
 
     Arguments:
         (input) mem_threshold -> Memory threshold for a process, in MBs.
-        (input) **kwargs:
-            None
         (output) -> List of processes that meet the memory threshold.
 
     """
@@ -170,16 +164,16 @@ def post_process(proc_data, args_array, cfg, **kwargs):
         requested.
 
     Arguments:
-        (input) proc_data -> Process data in dictionary format.
-        (input) args_array -> Dict of command line options and values
+        (input) proc_data -> Dictionary of process data.
+        (input) args_array -> Dictionary of command line options and values.
         (input) cfg -> Configuration module settings.
-        (input) **kwargs:
-            None
 
     """
 
-    if "-n" not in args_array:
+    proc_data = dict(proc_data)
+    args_array = dict(args_array)
 
+    if "-n" not in args_array:
         if "-f" in args_array:
             gen_libs.display_data(proc_data)
 
@@ -198,25 +192,21 @@ def run_program(args_array, **kwargs):
         Create a program lock to prevent other instantiations from running.
 
     Arguments:
-        (input) args_array -> Dict of command line options and values.
-        (input) **kwargs:
-            None
+        (input) args_array -> Dictionary of command line options and values.
 
     """
 
+    args_array = dict(args_array)
     cfg = gen_libs.load_module(args_array["-c"], args_array["-d"])
-
     server = gen_class.System()
     server.set_host_name()
 
     try:
         prog_lock = gen_class.ProgramLock(sys.argv, server.host_name)
-
         proc_data = get_svr_info(server)
         proc_data.update(get_svr_mem())
         proc_data["processes"] = get_proc_mem(cfg.memory_threshold)
         post_process(proc_data, args_array, cfg)
-
         del prog_lock
 
     except gen_class.SingleInstanceException:

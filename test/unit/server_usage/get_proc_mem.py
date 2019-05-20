@@ -34,7 +34,6 @@ import server_usage
 import lib.gen_libs as gen_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -69,8 +68,8 @@ class PSUtil(object):
         """
 
         # Named tuple for the attributes returned from psutil.process_iter.
-        Fullmem = collections.namedtuple("Fullmem", "uss percent")
-        fullmem = Fullmem(uss, percent)
+        fullmemtuple = collections.namedtuple("Fullmem", "uss percent")
+        fullmem = fullmemtuple(uss, percent)
 
         self.pid = pid
         self.p_pid = p_pid
@@ -176,13 +175,11 @@ class UnitTest(unittest.TestCase):
         Description:  Test which passes a string for the memory argument.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.process_iter
-            mock_str -> Mock Ref:  server_usage.gen_libs.str_2_type
+            None
 
         """
 
         test_data = [self.data2, self.data3, self.data4, self.data5]
-
         mock_psutil.return_value = psutil_generator()
         mock_str.return_value = 89
 
@@ -196,12 +193,11 @@ class UnitTest(unittest.TestCase):
         Description:  Test which passes a list for the memory argument.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.process_iter
+            None
 
         """
 
         test_data = [self.data3, self.data4, self.data5]
-
         mock_psutil.return_value = psutil_generator()
 
         self.assertEqual(server_usage.get_proc_mem([120]), test_data)
@@ -214,12 +210,11 @@ class UnitTest(unittest.TestCase):
         Description:  Test less then zero is passed for memory setting.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.process_iter
+            None
 
         """
 
         test_data = [self.data3, self.data4, self.data5]
-
         mock_psutil.return_value = psutil_generator()
 
         self.assertEqual(server_usage.get_proc_mem(-10), test_data)
@@ -232,12 +227,11 @@ class UnitTest(unittest.TestCase):
         Description:  Test where default setting is used.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.process_iter
+            None
 
         """
 
         test_data = [self.data3, self.data4, self.data5]
-
         mock_psutil.return_value = psutil_generator()
 
         self.assertEqual(server_usage.get_proc_mem(), test_data)
@@ -250,13 +244,12 @@ class UnitTest(unittest.TestCase):
         Description:  Test where zero memory setting is checked for.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.process_iter
+            None
 
         """
 
         test_data = [self.data1, self.data2, self.data3, self.data4,
                      self.data5]
-
         mock_psutil.return_value = psutil_generator()
 
         self.assertEqual(server_usage.get_proc_mem(0), test_data)
@@ -269,12 +262,11 @@ class UnitTest(unittest.TestCase):
         Description:  Test where multiple rows are returned.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.process_iter
+            None
 
         """
 
         test_data = [self.data3, self.data4, self.data5]
-
         mock_psutil.return_value = psutil_generator()
 
         self.assertEqual(server_usage.get_proc_mem(102), test_data)
@@ -287,12 +279,11 @@ class UnitTest(unittest.TestCase):
         Description:  Test where one row is returned.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.process_iter
+            None
 
         """
 
         test_data = [self.data5]
-
         mock_psutil.return_value = psutil_generator()
 
         self.assertEqual(server_usage.get_proc_mem(140), test_data)
@@ -305,12 +296,11 @@ class UnitTest(unittest.TestCase):
         Description:  Test where zero rows are returned.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.process_iter
+            None
 
         """
 
         test_data = []
-
         mock_psutil.return_value = psutil_generator()
 
         self.assertEqual(server_usage.get_proc_mem(200), test_data)
@@ -323,12 +313,11 @@ class UnitTest(unittest.TestCase):
         Description:  Test data is returned in correct format.
 
         Arguments:
-            mock_psutil -> Mock Ref:  server_usage.psutil.process_iter
+            None
 
         """
 
         test_data = [self.data5]
-
         mock_psutil.return_value = psutil_generator()
 
         self.assertEqual(server_usage.get_proc_mem(140), test_data)

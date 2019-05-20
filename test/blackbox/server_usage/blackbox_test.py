@@ -30,7 +30,6 @@ import mongo_lib.mongo_class as mongo_class
 import mongo_lib.mongo_libs as mongo_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -62,7 +61,7 @@ def file_check(out_file, search_list, json_fmt=False, **kwargs):
 
         if json_fmt:
             try:
-                data2 = json.loads(json.dumps(data))
+                _ = json.loads(json.dumps(data))
 
             except:
                 status = False

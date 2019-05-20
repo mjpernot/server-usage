@@ -110,7 +110,7 @@ class UnitTest(unittest.TestCase):
         Description:  Test data is returned in correct format.
 
         Arguments:
-            mock_lib -> Mock Ref:  server_usage.gen_libs
+            None
 
         """
 

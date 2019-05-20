@@ -34,7 +34,6 @@ import server_usage
 import lib.gen_libs as gen_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -145,6 +144,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_programlock_fail -> Test ProgramLock fails to lock.
         test_run_program -> Test run_program function.
 
     """
@@ -160,10 +160,30 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        Cfg = collections.namedtuple("Cfg", "memory_threshold")
-        self.cfg = Cfg(100)
-
+        cfg = collections.namedtuple("Cfg", "memory_threshold")
+        self.cfg = cfg(100)
         self.args = {"-c": "config_file", "-d": "config_dir"}
+
+    @mock.patch("server_usage.gen_class.ProgramLock")
+    @mock.patch("server_usage.gen_libs.load_module")
+    @mock.patch("server_usage.gen_class.System")
+    def test_programlock_fail(self, mock_class, mock_load, mock_lock):
+
+        """Function:  test_programlock_fail
+
+        Description:  Test ProgramLock fails to lock.
+
+        Arguments:
+            None
+
+        """
+
+        mock_lock.side_effect = server_usage.gen_class.SingleInstanceException
+        mock_load.return_value = self.cfg
+        mock_class.return_value = System()
+
+        with gen_libs.no_std_out():
+            self.assertFalse(server_usage.run_program(self.args))
 
     @mock.patch("server_usage.post_process")
     @mock.patch("server_usage.get_proc_mem")
@@ -179,18 +199,13 @@ class UnitTest(unittest.TestCase):
         Description:  Test run_program function.
 
         Arguments:
-            mock_class -> Mock Ref:  server_usage.gen_class
-            mock_load -> Mock Ref:  server_usage.gen_libs.load_module
-            mock_info -> Mock Ref:  server_usage.get_svr_info
-            mock_mem -> Mock Ref:  server_usage.get_svr_mem
-            mock_proc -> Mock Ref:  server_usage.get_proc_mem
-            mock_post -> Mock Ref:  server_usage.post_process
+            None
 
         """
 
         mock_class.ProgramLock.return_value = ProgramLock([], "Server_Name")
         mock_class.System.return_value = System()
-        mock_load = self.cfg
+        mock_load.return_value = self.cfg
         mock_info.return_value = {"servername": "Server_Name",
                                   "datetime": "2018-10-17 12:00:01"}
         mock_mem.return_value = {"tot_mem": 100000000, "mem_used": 80000000,
