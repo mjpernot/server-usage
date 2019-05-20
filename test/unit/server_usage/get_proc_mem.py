@@ -34,7 +34,6 @@ import server_usage
 import lib.gen_libs as gen_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -69,8 +68,8 @@ class PSUtil(object):
         """
 
         # Named tuple for the attributes returned from psutil.process_iter.
-        Fullmem = collections.namedtuple("Fullmem", "uss percent")
-        fullmem = Fullmem(uss, percent)
+        fullmemtuple = collections.namedtuple("Fullmem", "uss percent")
+        fullmem = fullmemtuple(uss, percent)
 
         self.pid = pid
         self.p_pid = p_pid
@@ -181,7 +180,6 @@ class UnitTest(unittest.TestCase):
         """
 
         test_data = [self.data2, self.data3, self.data4, self.data5]
-
         mock_psutil.return_value = psutil_generator()
         mock_str.return_value = 89
 
@@ -200,7 +198,6 @@ class UnitTest(unittest.TestCase):
         """
 
         test_data = [self.data3, self.data4, self.data5]
-
         mock_psutil.return_value = psutil_generator()
 
         self.assertEqual(server_usage.get_proc_mem([120]), test_data)
@@ -218,7 +215,6 @@ class UnitTest(unittest.TestCase):
         """
 
         test_data = [self.data3, self.data4, self.data5]
-
         mock_psutil.return_value = psutil_generator()
 
         self.assertEqual(server_usage.get_proc_mem(-10), test_data)
@@ -236,7 +232,6 @@ class UnitTest(unittest.TestCase):
         """
 
         test_data = [self.data3, self.data4, self.data5]
-
         mock_psutil.return_value = psutil_generator()
 
         self.assertEqual(server_usage.get_proc_mem(), test_data)
@@ -255,7 +250,6 @@ class UnitTest(unittest.TestCase):
 
         test_data = [self.data1, self.data2, self.data3, self.data4,
                      self.data5]
-
         mock_psutil.return_value = psutil_generator()
 
         self.assertEqual(server_usage.get_proc_mem(0), test_data)
@@ -273,7 +267,6 @@ class UnitTest(unittest.TestCase):
         """
 
         test_data = [self.data3, self.data4, self.data5]
-
         mock_psutil.return_value = psutil_generator()
 
         self.assertEqual(server_usage.get_proc_mem(102), test_data)
@@ -291,7 +284,6 @@ class UnitTest(unittest.TestCase):
         """
 
         test_data = [self.data5]
-
         mock_psutil.return_value = psutil_generator()
 
         self.assertEqual(server_usage.get_proc_mem(140), test_data)
@@ -309,7 +301,6 @@ class UnitTest(unittest.TestCase):
         """
 
         test_data = []
-
         mock_psutil.return_value = psutil_generator()
 
         self.assertEqual(server_usage.get_proc_mem(200), test_data)
@@ -327,7 +318,6 @@ class UnitTest(unittest.TestCase):
         """
 
         test_data = [self.data5]
-
         mock_psutil.return_value = psutil_generator()
 
         self.assertEqual(server_usage.get_proc_mem(140), test_data)
