@@ -34,7 +34,6 @@ import server_usage
 import lib.gen_libs as gen_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -65,8 +64,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        Server = collections.namedtuple("Server", "total")
-        self.test_data = Server(psutil.virtual_memory().total)
+        server = collections.namedtuple("Server", "total")
+        self.test_data = server(psutil.virtual_memory().total)
 
     def test_get_svr_mem(self):
 
