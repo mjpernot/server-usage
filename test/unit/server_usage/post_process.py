@@ -34,7 +34,6 @@ import server_usage
 import lib.gen_libs as gen_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -71,9 +70,8 @@ class UnitTest(unittest.TestCase):
         """
 
         self.proc_data = {"Data": "String"}
-
-        Cfg = collections.namedtuple("Cfg", "db coll")
-        self.cfg = Cfg("database", "collection")
+        cfg = collections.namedtuple("Cfg", "db coll")
+        self.cfg = cfg("database", "collection")
 
     @mock.patch("server_usage.gen_libs.display_data")
     def test_print_format(self, mock_display):
