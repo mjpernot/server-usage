@@ -9,7 +9,6 @@
         test/integration/server_usage/get_svr_info.py
 
     Arguments:
-        None
 
 """
 
@@ -32,7 +31,6 @@ import server_usage
 import lib.gen_libs as gen_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -44,11 +42,6 @@ class System(object):
         object is used as a proxy for operating with the system.  The basic
         methods and attributes to contain information about the physical
         server.
-
-    Super-Class:  object
-
-    Sub-Classes:
-        None
 
     Methods:
         __init__ -> Class instance initilization.
@@ -77,10 +70,6 @@ class UnitTest(unittest.TestCase):
 
     Description:  Class which is a representation of a unit testing.
 
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:  None
-
     Methods:
         setUp -> Unit testing initilization.
         test_get_svr_info -> Test data is returned in correct format.
@@ -94,7 +83,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -108,7 +96,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test data is returned in correct format.
 
         Arguments:
-            None
 
         """
 
