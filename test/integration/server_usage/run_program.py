@@ -116,7 +116,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test printing formatted data.
 
         Arguments:
-            None
 
         """
 
