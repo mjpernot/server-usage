@@ -9,7 +9,6 @@
         test/unit/server_usage/get_svr_info.py
 
     Arguments:
-        None
 
 """
 
