@@ -71,7 +71,6 @@ import lib.gen_class as gen_class
 import mongo_lib.mongo_libs as mongo_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -83,8 +82,6 @@ def help_message(**kwargs):
         message when -h option is selected.
 
     Arguments:
-        (input) **kwargs:
-            None
 
     """
 
