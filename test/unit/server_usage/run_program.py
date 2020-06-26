@@ -9,7 +9,6 @@
         test/unit/server_usage/run_program.py
 
     Arguments:
-        None
 
 """
 
@@ -25,8 +24,8 @@ else:
     import unittest
 
 # Third-party
-import mock
 import collections
+import mock
 
 # Local
 sys.path.append(os.getcwd())
@@ -42,10 +41,6 @@ class ProgramLock(object):
     """Class:  ProgramLock
 
     Description:  Mock of the gen_class.ProgramLock class.
-
-    Super-Class:  object
-
-    Sub-Classes:
 
     Methods:
         __init__ -> Class instance initilization.
@@ -74,7 +69,6 @@ class ProgramLock(object):
         Description:  Deletion of the ProgramLock instance.
 
         Arguments:
-            None
 
         """
 
@@ -86,11 +80,6 @@ class System(object):
     """Class:  System
 
     Description:  Mock of the gen_class.System class.
-
-    Super-Class:  object
-
-    Sub-Classes:
-        None
 
     Methods:
         __init__ -> Class instance initilization.
@@ -138,10 +127,6 @@ class UnitTest(unittest.TestCase):
 
     Description:  Class which is a representation of a unit testing.
 
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:  None
-
     Methods:
         setUp -> Unit testing initilization.
         test_programlock_fail -> Test ProgramLock fails to lock.
@@ -156,7 +141,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -174,7 +158,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test ProgramLock fails to lock.
 
         Arguments:
-            None
 
         """
 
@@ -199,7 +182,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test run_program function.
 
         Arguments:
-            None
 
         """
 
