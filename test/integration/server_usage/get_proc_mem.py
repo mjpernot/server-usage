@@ -64,6 +64,7 @@ class UnitTest(unittest.TestCase):
         setUp -> Unit testing initilization.
         test_pass_zero -> Test which passes a zero for the memory argument.
         test_pass_negative -> Test which passes a negative for memory argument.
+        test_pass_list -> Test which passes a list for the memory argument.
         test_pass_dict -> Test which passes a dict for the memory argument.
         test_pass_int -> Test which passes an integer for the memory argument.
         test_pass_string -> Test which passes a string for the memory argument.
@@ -109,6 +110,22 @@ class UnitTest(unittest.TestCase):
 
         test_data = capture_mem(100)
         program_data = server_usage.get_proc_mem(-1)
+
+        self.assertEqual(isinstance(program_data, list),
+                         isinstance(test_data, list))
+
+    def test_pass_list(self):
+
+        """Function:  test_pass_list
+
+        Description:  Test which passes a list for the memory argument.
+
+        Arguments:
+
+        """
+
+        test_data = capture_mem(100)
+        program_data = server_usage.get_proc_mem([90])
 
         self.assertEqual(isinstance(program_data, list),
                          isinstance(test_data, list))
