@@ -29,7 +29,6 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import server_usage
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -61,8 +60,17 @@ class System(object):
 
         """
 
-        self.host = "HOST_NAME"
-        self.host_name = "SERVER_NAME"
+        if host:
+            self.host = host
+
+        else:
+            self.host = "HOST_NAME"
+
+        if host_name:
+            self.host_name = host_name
+
+        else:
+            self.host_name = "SERVER_NAME"
 
 
 class UnitTest(unittest.TestCase):
