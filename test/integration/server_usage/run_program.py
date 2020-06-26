@@ -9,7 +9,6 @@
         test/integration/server_usage/run_program.py
 
     Arguments:
-        None
 
 """
 
@@ -36,7 +35,6 @@ import mongo_lib.mongo_libs as mongo_libs
 import mongo_lib.mongo_class as mongo_class
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -45,10 +43,6 @@ class UnitTest(unittest.TestCase):
     """Class:  UnitTest
 
     Description:  Class which is a representation of a unit testing.
-
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:  None
 
     Methods:
         setUp -> Unit testing initilization.
@@ -67,7 +61,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -98,7 +91,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test inserting data into Mongo database.
 
         Arguments:
-            None
 
         """
 
@@ -138,7 +130,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test standard out suppression.
 
         Arguments:
-            None
 
         """
 
@@ -153,7 +144,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test printing unformatted data.
 
         Arguments:
-            None
 
         """
 
@@ -167,7 +157,6 @@ class UnitTest(unittest.TestCase):
         Description:  Clean up of integration testing.
 
         Arguments:
-            None
 
         """
 
