@@ -9,7 +9,6 @@
         test/blackbox/server_usage/blackbox_test.py test_option other_arguments
 
     Arguments:
-        None
 
 """
 
@@ -127,7 +126,6 @@ def main():
         status -> True|False - Status of checks.
 
     Arguments:
-        None
 
     """
 
