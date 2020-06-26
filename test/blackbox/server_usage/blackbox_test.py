@@ -129,18 +129,19 @@ def main():
 
     """
 
+    cmdline = gen_libs.get_inst(sys)
     base_dir = "test/blackbox/server_usage"
     test_path = os.path.join(os.getcwd(), base_dir)
     config_path = os.path.join(test_path, "config")
     search_list = ["servername", "datetime", "mem_used", "tot_mem"]
-    option = sys.argv[1]
+    option = cmdline.argv[1]
 
     if option == "stdout":
-        out_file = sys.argv[2]
+        out_file = cmdline.argv[2]
         status = file_check(out_file, search_list)
 
     elif option == "json":
-        out_file = sys.argv[2]
+        out_file = cmdline.argv[2]
         status = file_check(out_file, search_list, json_fmt=True)
 
     elif option == "mongo":
