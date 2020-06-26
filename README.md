@@ -73,14 +73,18 @@ cp configuration.py.TEMPLATE configuration.py
 ```
 
 Make the appropriate changes to the environment.
-  * memory_threshold is amount of memory required before the process is recorded.  Value is in Megabytes.
-    - memory_threshold = 100
-
   * Make the appropriate changes to connect to a Mongo database.  Only required if saving the results to a Mongo database.
     - user = "USER_NAME"
     - passwd = "USER_PASSWORD"
     - host = "HOST_IP"
     - name = "HOSTNAME"
+
+  * memory_threshold is amount of memory required before the process is recorded.  Value is in Megabytes.
+    - memory_threshold = 100
+
+  * Name of database and collection in Mongo.
+    - db = "sysmon"
+    - coll = "mem_usage"
 
   * If connecting to a Mongo replica set, otherwise set to None.
     - repset = "REPLICA_SET_NAME"
