@@ -5,6 +5,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [1.0.2] - 2020-06-25
+### Fixed
+- main:  Fixed handling command line arguments from SonarQube scan finding.
+
 ### Changed
 - configuration.py.TEMPLATE:  Changed format of configuration file for Mongo connection.
 - Documentation updates.
