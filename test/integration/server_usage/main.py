@@ -72,10 +72,8 @@ class UnitTest(unittest.TestCase):
         self.test_path = os.path.join(os.getcwd(), self.base_dir)
         self.config_path = os.path.join(self.test_path, "config")
         self.cfg = gen_libs.load_module("configuration", self.config_path)
-
         self.argv_list = [os.path.join(self.base_dir, "main.py"),
                           "-c", "configuration", "-d", self.config_path]
-
         svr = mongo_class.Server(self.cfg.name, self.cfg.user, self.cfg.passwd,
                                  self.cfg.host, self.cfg.port, self.cfg.auth,
                                  self.cfg.conf_file)
@@ -99,11 +97,10 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        cmdline = gen_libs.get_inst(sys)
         self.argv_list.extend(("-m", "-n"))
-        sys.argv = self.argv_list
-
+        cmdline.argv = self.argv_list
         server_usage.main()
-
         coll = mongo_libs.crt_coll_inst(self.cfg, self.cfg.db, self.cfg.coll)
         coll.connect()
 
@@ -125,7 +122,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        sys.argv = self.argv_list
+        cmdline = gen_libs.get_inst(sys)
+        cmdline.argv = self.argv_list
 
         with gen_libs.no_std_out():
             self.assertFalse(server_usage.main())
@@ -140,8 +138,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        cmdline = gen_libs.get_inst(sys)
         self.argv_list.append("-n")
-        sys.argv = self.argv_list
+        cmdline.argv = self.argv_list
 
         self.assertFalse(server_usage.main())
 
@@ -155,7 +154,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        sys.argv = self.argv_list
+        cmdline = gen_libs.get_inst(sys)
+        cmdline.argv = self.argv_list
 
         with gen_libs.no_std_out():
             self.assertFalse(server_usage.main())
@@ -173,7 +173,8 @@ class UnitTest(unittest.TestCase):
 
         mock_run.return_value = True
 
-        sys.argv = self.argv_list
+        cmdline = gen_libs.get_inst(sys)
+        cmdline.argv = self.argv_list
 
         self.assertFalse(server_usage.main())
 
@@ -190,7 +191,8 @@ class UnitTest(unittest.TestCase):
 
         mock_arg.return_value = True
 
-        sys.argv = self.argv_list
+        cmdline = gen_libs.get_inst(sys)
+        cmdline.argv = self.argv_list
 
         self.assertFalse(server_usage.main())
 
@@ -219,8 +221,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        cmdline = gen_libs.get_inst(sys)
         self.argv_list.append("-v")
-        sys.argv = self.argv_list
+        cmdline.argv = self.argv_list
 
         with gen_libs.no_std_out():
             self.assertFalse(server_usage.main())
