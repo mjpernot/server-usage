@@ -193,13 +193,14 @@ def run_program(args_array, **kwargs):
 
     """
 
+    cmdline = gen_libs.get_inst(sys)
     args_array = dict(args_array)
     cfg = gen_libs.load_module(args_array["-c"], args_array["-d"])
     server = gen_class.System()
     server.set_host_name()
 
     try:
-        prog_lock = gen_class.ProgramLock(sys.argv, server.host_name)
+        prog_lock = gen_class.ProgramLock(cmdline.argv, server.host_name)
         proc_data = get_svr_info(server)
         proc_data.update(get_svr_mem())
         proc_data["processes"] = get_proc_mem(cfg.memory_threshold)
