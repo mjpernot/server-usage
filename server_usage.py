@@ -20,36 +20,37 @@
         NOTE 1:  -v and -h overrides all other options.
 
     Notes:
-        Configuration file format (configuration.py).  The Mongo database
-        section is only required if saving the results to the database.
-
-            # Is amount of memory required before the process is recorded.
-            # Value is in Megabytes.
-            memory_threshold = 100
+        Configuration file format (config/configuration.py.TEMPLATE).
+            The Mongo database section is only required if saving the results
+            to the database.
 
             # Mongo database section.
             # User connection information.
             user = "USER_NAME"
             passwd = "USER_PASSWORD"
-
             # Database host information.
             host = "HOST_IP"
             name = "HOSTNAME"
-
-            # Database to authentication to.
-            db_auth = "AUTHENTICATION_DATABASE"
-
-            # Replica Set Mongo configuration settings.
-            # Replica set name.  Set to None if not connectin to a replica set.
-            repset = "REPLICA_SET_NAME"
-
-            # Replica host listing.  List of mongo databases in replica set.
-            # Set to None if not connecting to a Mongo replica set.
-            repset_hosts = "HOST1:PORT, HOST2:PORT, [...]"
-
+            # Is amount of memory required before the process is recorded.
+            #    Value is in Megabytes.
+            memory_threshold = 100
             # Database and Collection names
             db = "sysmon"
             coll = "mem_usage"
+            # Replica Set Mongo configuration settings.
+            # By default all settings are set to None.
+            #    None means the Mongo database is not part of a replica set.
+            # Replica set name.
+            #    Format:  repset = "REPLICA_SET_NAME"
+            repset = None
+            # Replica host listing.  List of mongo databases in replica set.
+            # Set to None if not connecting to a Mongo replica set.
+            #    Format:  repset_hosts = "HOST1:PORT, HOST2:PORT, [...]"
+            repset_hosts = None
+            # Database to authentication to.
+            #    Format:  db_auth = "AUTHENTICATION_DATABASE"
+            db_auth = None
+
 
     Example:
         server_usage.py -c configuration -d config
