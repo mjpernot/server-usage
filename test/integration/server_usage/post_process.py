@@ -69,9 +69,10 @@ class UnitTest(unittest.TestCase):
         self.config_path = os.path.join(self.test_path, "config")
         self.cfg = gen_libs.load_module("configuration", self.config_path)
 
-        svr = mongo_class.Server(self.cfg.name, self.cfg.user, self.cfg.passwd,
-                                 self.cfg.host, self.cfg.port, self.cfg.auth,
-                                 self.cfg.conf_file)
+        svr = mongo_class.Server(
+            self.cfg.name, self.cfg.user, self.cfg.passwd, host=self.cfg.host,
+            port=self.cfg.port, auth=self.cfg.auth,
+            conf_file=self.cfg.conf_file)
         svr.connect()
 
         if self.cfg.db in svr.fetch_dbs():
@@ -147,13 +148,13 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        db = mongo_class.DB(self.cfg.name, self.cfg.user, self.cfg.passwd,
-                            self.cfg.host, self.cfg.port, self.cfg.db,
-                            self.cfg.auth, self.cfg.conf_file)
-
-        db.db_connect(self.cfg.db)
-        db.db_cmd("dropDatabase")
-        cmds_gen.disconnect([db])
+        mongo = mongo_class.DB(
+            self.cfg.name, self.cfg.user, self.cfg.passwd, host=self.cfg.host,
+            port=self.cfg.port, db=self.cfg.db, auth=self.cfg.auth,
+            conf_file=self.cfg.conf_file)
+        mongo.db_connect(self.cfg.db)
+        mongo.db_cmd("dropDatabase")
+        cmds_gen.disconnect([mongo])
 
 
 if __name__ == "__main__":

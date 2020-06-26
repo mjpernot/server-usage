@@ -24,7 +24,6 @@ else:
     import unittest
 
 # Third-party
-import mock
 
 # Local
 sys.path.append(os.getcwd())
@@ -71,9 +70,10 @@ class UnitTest(unittest.TestCase):
 
         self.args_array = {"-c": "configuration", "-d": self.config_path}
 
-        svr = mongo_class.Server(self.cfg.name, self.cfg.user, self.cfg.passwd,
-                                 self.cfg.host, self.cfg.port, self.cfg.auth,
-                                 self.cfg.conf_file)
+        svr = mongo_class.Server(
+            self.cfg.name, self.cfg.user, self.cfg.passwd, host=self.cfg.host,
+            port=self.cfg.port, auth=self.cfg.auth,
+            conf_file=self.cfg.conf_file)
         svr.connect()
 
         if self.cfg.db in svr.fetch_dbs():
@@ -159,13 +159,14 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        db = mongo_class.DB(self.cfg.name, self.cfg.user, self.cfg.passwd,
-                            self.cfg.host, self.cfg.port, self.cfg.db,
-                            self.cfg.auth, self.cfg.conf_file)
+        mongo = mongo_class.DB(
+            self.cfg.name, self.cfg.user, self.cfg.passwd, host=self.cfg.host,
+            port=self.cfg.port, db=self.cfg.db, auth=self.cfg.auth,
+            conf_file=self.cfg.conf_file)
 
-        db.db_connect(self.cfg.db)
-        db.db_cmd("dropDatabase")
-        cmds_gen.disconnect([db])
+        mongo.db_connect(self.cfg.db)
+        mongo.db_cmd("dropDatabase")
+        cmds_gen.disconnect([mongo])
 
 
 if __name__ == "__main__":

@@ -29,13 +29,12 @@ import psutil
 # Local
 sys.path.append(os.getcwd())
 import server_usage
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
 
 
-def capture_mem(mem, **kwargs):
+def capture_mem(mem):
 
     """Function:  capture_mem
 
