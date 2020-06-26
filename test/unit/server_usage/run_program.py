@@ -40,39 +40,27 @@ class ProgramLock(object):
 
     """Class:  ProgramLock
 
-    Description:  Mock of the gen_class.ProgramLock class.
+    Description:  Class stub holder for gen_class.ProgramLock class.
 
     Methods:
-        __init__ -> Class instance initilization.
-        __del__ -> Deletion of the ProgramLock instance.
+        __init__ -> Class initialization.
 
     """
 
-    def __init__(self, argv, flavor_id=""):
+    def __init__(self, cmdline, flavor):
 
         """Method:  __init__
 
-        Description:  Initialization of an instance of the ProgramLock class.
+        Description:  Class initialization.
 
         Arguments:
-            (input) argv -> Arguments from the command line.
-            (input) flavor_id -> Unique identifier for an instance.
+            (input) cmdline -> Argv command line.
+            (input) flavor -> Lock flavor ID.
 
         """
 
-        self.lock_created = True
-
-    def __del__(self):
-
-        """Method:  __del__
-
-        Description:  Deletion of the ProgramLock instance.
-
-        Arguments:
-
-        """
-
-        return True
+        self.cmdline = cmdline
+        self.flavor = flavor
 
 
 class System(object):
@@ -147,6 +135,7 @@ class UnitTest(unittest.TestCase):
         cfg = collections.namedtuple("Cfg", "memory_threshold")
         self.cfg = cfg(100)
         self.args = {"-c": "config_file", "-d": "config_dir"}
+        self.proglock = ProgramLock(["cmdline"], "FlavorID")
 
     @mock.patch("server_usage.gen_class.ProgramLock")
     @mock.patch("server_usage.gen_libs.load_module")
@@ -185,7 +174,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mock_class.ProgramLock.return_value = ProgramLock([], "Server_Name")
+        mock_class.ProgramLock.return_value = self.proglock
         mock_class.System.return_value = System()
         mock_load.return_value = self.cfg
         mock_info.return_value = {"servername": "Server_Name",
