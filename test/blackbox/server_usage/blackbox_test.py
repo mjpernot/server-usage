@@ -32,7 +32,7 @@ import version
 __version__ = version.__version__
 
 
-def file_check(out_file, search_list, json_fmt=False, **kwargs):
+def file_check(out_file, search_list, json_fmt=False):
 
     """Function:  file_check
 
@@ -75,9 +75,9 @@ def file_check(out_file, search_list, json_fmt=False, **kwargs):
     return status
 
 
-def mongo_check(config_path, config_file, **kwargs):
+def mongo_check(config_path, config_file):
 
-    """Function:  file_check
+    """Function:  mongo_check
 
     Description:  Check the contents of the output file based on the items in
         the search_list variable and check to see if file is in JSON format.
@@ -102,13 +102,14 @@ def mongo_check(config_path, config_file, **kwargs):
     else:
         status = False
 
-    db = mongo_class.DB(cfg.name, cfg.user, cfg.passwd, cfg.host, cfg.port,
-                        cfg.db, cfg.auth, cfg.conf_file)
+    mongo = mongo_class.DB(
+        cfg.name, cfg.user, cfg.passwd, host=cfg.host, port=cfg.port,
+        db=cfg.db, auth=cfg.auth, conf_file=cfg.conf_file)
 
-    db.db_connect(cfg.db)
-    db.db_cmd("dropDatabase")
+    mongo.db_connect(cfg.db)
+    mongo.db_cmd("dropDatabase")
 
-    cmds_gen.disconnect([coll, db])
+    cmds_gen.disconnect([coll, mongo])
 
     return status
 
