@@ -43,6 +43,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp -> Unit testing initilization.
+        test_run_program -> Test with run_program call.
         test_dir_chk_crt_false -> Test with arg_dir_chk_crt returns False.
         test_dir_chk_crt_true -> Test with arg_dir_chk_crt returns True.
         test_require_false -> Test with arg_require returns False.
@@ -65,6 +66,27 @@ class UnitTest(unittest.TestCase):
         """
 
         self.args = {"-c": "config_file", "-d": "config_dir"}
+
+    @mock.patch("server_usage.run_program")
+    @mock.patch("server_usage.arg_parser")
+    @mock.patch("server_usage.gen_libs")
+    def test_run_program(self, mock_lib, mock_arg, mock_run):
+
+        """Function:  test_run_program
+
+        Description:  Test with run_program call.
+
+        Arguments:
+
+        """
+
+        mock_lib.help_func.return_value = False
+        mock_lib.root_run.return_value = True
+        mock_arg.arg_require.return_value = False
+        mock_arg.arg_dir_chk_crt.return_value = False
+        mock_run.return_value = True
+
+        self.assertFalse(server_usage.main())
 
     @mock.patch("server_usage.run_program")
     @mock.patch("server_usage.arg_parser")
