@@ -105,13 +105,7 @@ class UnitTest(unittest.TestCase):
         coll = mongo_libs.crt_coll_inst(self.cfg, self.cfg.db, self.cfg.coll)
         coll.connect()
 
-        if coll.coll_cnt() == 1:
-            status = True
-
-        else:
-            status = False
-
-        self.assertTrue(status)
+        self.assertTrue(coll.coll_cnt() == 1)
 
     def test_print_format(self):
 
