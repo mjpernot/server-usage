@@ -90,22 +90,13 @@ def mongo_check(config_path, config_file):
     """
 
     status = True
-
     cfg = gen_libs.load_module(config_file, config_path)
-
     coll = mongo_libs.crt_coll_inst(cfg, cfg.db, cfg.coll)
     coll.connect()
-
-    if coll.coll_cnt() == 1:
-        status = True
-
-    else:
-        status = False
-
+    status = coll.coll_cnt() == 1
     mongo = mongo_class.DB(
         cfg.name, cfg.user, cfg.passwd, host=cfg.host, port=cfg.port,
         db=cfg.db, auth=cfg.auth, conf_file=cfg.conf_file)
-
     mongo.db_connect(cfg.db)
     mongo.db_cmd("dropDatabase")
 
