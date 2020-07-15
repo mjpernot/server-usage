@@ -9,7 +9,6 @@
         test/integration/server_usage/run_program.py
 
     Arguments:
-        None
 
 """
 
@@ -25,7 +24,6 @@ else:
     import unittest
 
 # Third-party
-import mock
 
 # Local
 sys.path.append(os.getcwd())
@@ -36,7 +34,6 @@ import mongo_lib.mongo_libs as mongo_libs
 import mongo_lib.mongo_class as mongo_class
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -45,10 +42,6 @@ class UnitTest(unittest.TestCase):
     """Class:  UnitTest
 
     Description:  Class which is a representation of a unit testing.
-
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:  None
 
     Methods:
         setUp -> Unit testing initilization.
@@ -67,7 +60,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -78,9 +70,10 @@ class UnitTest(unittest.TestCase):
 
         self.args_array = {"-c": "configuration", "-d": self.config_path}
 
-        svr = mongo_class.Server(self.cfg.name, self.cfg.user, self.cfg.passwd,
-                                 self.cfg.host, self.cfg.port, self.cfg.auth,
-                                 self.cfg.conf_file)
+        svr = mongo_class.Server(
+            self.cfg.name, self.cfg.user, self.cfg.passwd, host=self.cfg.host,
+            port=self.cfg.port, auth=self.cfg.auth,
+            conf_file=self.cfg.conf_file)
         svr.connect()
 
         if self.cfg.db in svr.fetch_dbs():
@@ -98,7 +91,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test inserting data into Mongo database.
 
         Arguments:
-            None
 
         """
 
@@ -109,13 +101,7 @@ class UnitTest(unittest.TestCase):
         coll = mongo_libs.crt_coll_inst(self.cfg, self.cfg.db, self.cfg.coll)
         coll.connect()
 
-        if coll.coll_cnt() == 1:
-            status = True
-
-        else:
-            status = False
-
-        self.assertTrue(status)
+        self.assertTrue(coll.coll_cnt() == 1)
 
     def test_print_format(self):
 
@@ -124,7 +110,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test printing formatted data.
 
         Arguments:
-            None
 
         """
 
@@ -138,7 +123,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test standard out suppression.
 
         Arguments:
-            None
 
         """
 
@@ -153,7 +137,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test printing unformatted data.
 
         Arguments:
-            None
 
         """
 
@@ -167,17 +150,17 @@ class UnitTest(unittest.TestCase):
         Description:  Clean up of integration testing.
 
         Arguments:
-            None
 
         """
 
-        db = mongo_class.DB(self.cfg.name, self.cfg.user, self.cfg.passwd,
-                            self.cfg.host, self.cfg.port, self.cfg.db,
-                            self.cfg.auth, self.cfg.conf_file)
+        mongo = mongo_class.DB(
+            self.cfg.name, self.cfg.user, self.cfg.passwd, host=self.cfg.host,
+            port=self.cfg.port, db=self.cfg.db, auth=self.cfg.auth,
+            conf_file=self.cfg.conf_file)
 
-        db.db_connect(self.cfg.db)
-        db.db_cmd("dropDatabase")
-        cmds_gen.disconnect([db])
+        mongo.db_connect(self.cfg.db)
+        mongo.db_cmd("dropDatabase")
+        cmds_gen.disconnect([mongo])
 
 
 if __name__ == "__main__":

@@ -9,7 +9,6 @@
         test/unit/server_usage/get_proc_mem.py
 
     Arguments:
-        None
 
 """
 
@@ -25,13 +24,12 @@ else:
     import unittest
 
 # Third-party
-import mock
 import collections
+import mock
 
 # Local
 sys.path.append(os.getcwd())
 import server_usage
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -43,11 +41,6 @@ class PSUtil(object):
 
     Description:  Class which is a mock representation of a
         psutil.process_iter class.
-
-    Super-Class:  object
-
-    Sub-Classes:
-        None
 
     Methods:
         __init__ -> Class instance initilization.
@@ -63,7 +56,6 @@ class PSUtil(object):
         Description:  Initialization of an instance of the PSUtil class.
 
         Arguments:
-            None
 
         """
 
@@ -82,7 +74,6 @@ class PSUtil(object):
         Description:  Mock the psutil.process_iters.ppid() function.
 
         Arguments:
-            None
 
         """
 
@@ -95,7 +86,6 @@ class PSUtil(object):
         Description:  Mock the psutil.process_iters.memory_percent() function.
 
         Arguments:
-            None
 
         """
 
@@ -109,7 +99,6 @@ def psutil_generator():
     Description:  Generator function to mock the psutil.process_iters function.
 
     Arguments:
-        None
 
     """
 
@@ -125,10 +114,6 @@ class UnitTest(unittest.TestCase):
     """Class:  UnitTest
 
     Description:  Class which is a representation of a unit testing.
-
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:  None
 
     Methods:
         setUp -> Unit testing initilization.
@@ -151,7 +136,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -175,7 +159,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test which passes a string for the memory argument.
 
         Arguments:
-            None
 
         """
 
@@ -193,7 +176,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test which passes a list for the memory argument.
 
         Arguments:
-            None
 
         """
 
@@ -210,7 +192,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test less then zero is passed for memory setting.
 
         Arguments:
-            None
 
         """
 
@@ -227,7 +208,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test where default setting is used.
 
         Arguments:
-            None
 
         """
 
@@ -244,7 +224,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test where zero memory setting is checked for.
 
         Arguments:
-            None
 
         """
 
@@ -262,7 +241,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test where multiple rows are returned.
 
         Arguments:
-            None
 
         """
 
@@ -279,7 +257,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test where one row is returned.
 
         Arguments:
-            None
 
         """
 
@@ -296,7 +273,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test where zero rows are returned.
 
         Arguments:
-            None
 
         """
 
@@ -313,7 +289,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test data is returned in correct format.
 
         Arguments:
-            None
 
         """
 

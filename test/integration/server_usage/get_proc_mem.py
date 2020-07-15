@@ -9,7 +9,6 @@
         test/integration/server_usage/get_proc_mem.py
 
     Arguments:
-        None
 
 """
 
@@ -30,17 +29,16 @@ import psutil
 # Local
 sys.path.append(os.getcwd())
 import server_usage
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
 
 
-def capture_mem(mem, **kwargs):
+def capture_mem(mem):
 
     """Function:  capture_mem
 
-    Description:  Used to test the results returned from get_prco_mem.
+    Description:  Used to test the results returned from get_proc_mem.
 
     Arguments:
         (input) mem -> Memory threshold for a process, in MBs.
@@ -61,12 +59,13 @@ class UnitTest(unittest.TestCase):
 
     Description:  Class which is a representation of a unit testing.
 
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:  None
-
     Methods:
         setUp -> Unit testing initilization.
+        test_pass_zero -> Test which passes a zero for the memory argument.
+        test_pass_negative -> Test which passes a negative for memory argument.
+        test_pass_list -> Test which passes a list for the memory argument.
+        test_pass_dict -> Test which passes a dict for the memory argument.
+        test_pass_int -> Test which passes an integer for the memory argument.
         test_pass_string -> Test which passes a string for the memory argument.
         test_get_proc_mem -> Test data is returned in correct format.
 
@@ -79,9 +78,88 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
+
+    def test_pass_zero(self):
+
+        """Function:  test_pass_zero
+
+        Description:  Test which passes a zero for the memory argument.
+
+        Arguments:
+
+        """
+
+        test_data = capture_mem(0)
+        program_data = server_usage.get_proc_mem(0)
+
+        self.assertEqual(isinstance(program_data, list),
+                         isinstance(test_data, list))
+
+    def test_pass_negative(self):
+
+        """Function:  test_pass_negative
+
+        Description:  Test which passes a negative for the memory argument.
+
+        Arguments:
+
+        """
+
+        test_data = capture_mem(100)
+        program_data = server_usage.get_proc_mem(-1)
+
+        self.assertEqual(isinstance(program_data, list),
+                         isinstance(test_data, list))
+
+    def test_pass_list(self):
+
+        """Function:  test_pass_list
+
+        Description:  Test which passes a list for the memory argument.
+
+        Arguments:
+
+        """
+
+        test_data = capture_mem(100)
+        program_data = server_usage.get_proc_mem([90])
+
+        self.assertEqual(isinstance(program_data, list),
+                         isinstance(test_data, list))
+
+    def test_pass_dict(self):
+
+        """Function:  test_pass_dict
+
+        Description:  Test which passes a dictionary for the memory argument.
+
+        Arguments:
+
+        """
+
+        test_data = capture_mem(100)
+        program_data = server_usage.get_proc_mem({"key": 90})
+
+        self.assertEqual(isinstance(program_data, list),
+                         isinstance(test_data, list))
+
+    def test_pass_int(self):
+
+        """Function:  test_pass_int
+
+        Description:  Test which passes an integer for the memory argument.
+
+        Arguments:
+
+        """
+
+        test_data = capture_mem(90)
+        program_data = server_usage.get_proc_mem(90)
+
+        self.assertEqual(isinstance(program_data, list),
+                         isinstance(test_data, list))
 
     def test_pass_string(self):
 
@@ -90,13 +168,14 @@ class UnitTest(unittest.TestCase):
         Description:  Test which passes a string for the memory argument.
 
         Arguments:
-            None
 
         """
 
         test_data = capture_mem(90)
+        program_data = server_usage.get_proc_mem('90')
 
-        self.assertEqual(server_usage.get_proc_mem('90'), test_data)
+        self.assertEqual(isinstance(program_data, list),
+                         isinstance(test_data, list))
 
     def test_get_proc_mem(self):
 
@@ -105,13 +184,14 @@ class UnitTest(unittest.TestCase):
         Description:  Test data is returned in correct format.
 
         Arguments:
-            None
 
         """
 
         test_data = capture_mem(90)
+        program_data = server_usage.get_proc_mem(90)
 
-        self.assertEqual(server_usage.get_proc_mem(90), test_data)
+        self.assertEqual(isinstance(program_data, list),
+                         isinstance(test_data, list))
 
 
 if __name__ == "__main__":

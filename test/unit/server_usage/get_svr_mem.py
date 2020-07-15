@@ -9,7 +9,6 @@
         test/unit/server_usage/get_svr_mem.py
 
     Arguments:
-        None
 
 """
 
@@ -25,13 +24,12 @@ else:
     import unittest
 
 # Third-party
-import mock
 import collections
+import mock
 
 # Local
 sys.path.append(os.getcwd())
 import server_usage
-import lib.gen_libs as gen_libs
 import version
 
 __version__ = version.__version__
@@ -42,10 +40,6 @@ class UnitTest(unittest.TestCase):
     """Class:  UnitTest
 
     Description:  Class which is a representation of a unit testing.
-
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:  None
 
     Methods:
         setUp -> Unit testing initilization.
@@ -60,7 +54,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -76,7 +69,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test data is returned in correct format.
 
         Arguments:
-            None
 
         """
 

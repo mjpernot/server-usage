@@ -9,7 +9,6 @@
         test/unit/server_usage/post_process.py
 
     Arguments:
-        None
 
 """
 
@@ -25,8 +24,8 @@ else:
     import unittest
 
 # Third-party
-import mock
 import collections
+import mock
 
 # Local
 sys.path.append(os.getcwd())
@@ -42,10 +41,6 @@ class UnitTest(unittest.TestCase):
     """Class:  UnitTest
 
     Description:  Class which is a representation of a unit testing.
-
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:  None
 
     Methods:
         setUp -> Unit testing initilization.
@@ -65,7 +60,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -81,7 +75,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with printing formatted data.
 
         Arguments:
-            None
 
         """
 
@@ -98,7 +91,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with printing unformatted data.
 
         Arguments:
-            None
 
         """
 
@@ -115,7 +107,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with suppress option set to false.
 
         Arguments:
-            None
 
         """
 
@@ -132,7 +123,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with suppress option set to true.
 
         Arguments:
-            None
 
         """
 
@@ -148,7 +138,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with mongo option set to false.
 
         Arguments:
-            None
 
         """
 
@@ -165,7 +154,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test with mongo option set to true.
 
         Arguments:
-            None
 
         """
 
