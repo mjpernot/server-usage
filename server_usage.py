@@ -20,36 +20,37 @@
         NOTE 1:  -v and -h overrides all other options.
 
     Notes:
-        Configuration file format (configuration.py).  The Mongo database
-        section is only required if saving the results to the database.
-
-            # Is amount of memory required before the process is recorded.
-            # Value is in Megabytes.
-            memory_threshold = 100
+        Configuration file format (config/configuration.py.TEMPLATE).
+            The Mongo database section is only required if saving the results
+            to the database.
 
             # Mongo database section.
             # User connection information.
             user = "USER_NAME"
             passwd = "USER_PASSWORD"
-
             # Database host information.
             host = "HOST_IP"
             name = "HOSTNAME"
-
-            # Database to authentication to.
-            db_auth = "AUTHENTICATION_DATABASE"
-
-            # Replica Set Mongo configuration settings.
-            # Replica set name.  Set to None if not connectin to a replica set.
-            repset = "REPLICA_SET_NAME"
-
-            # Replica host listing.  List of mongo databases in replica set.
-            # Set to None if not connecting to a Mongo replica set.
-            repset_hosts = "HOST1:PORT, HOST2:PORT, [...]"
-
+            # Is amount of memory required before the process is recorded.
+            #    Value is in Megabytes.
+            memory_threshold = 100
             # Database and Collection names
             db = "sysmon"
             coll = "mem_usage"
+            # Replica Set Mongo configuration settings.
+            # By default all settings are set to None.
+            #    None means the Mongo database is not part of a replica set.
+            # Replica set name.
+            #    Format:  repset = "REPLICA_SET_NAME"
+            repset = None
+            # Replica host listing.  List of mongo databases in replica set.
+            # Set to None if not connecting to a Mongo replica set.
+            #    Format:  repset_hosts = "HOST1:PORT, HOST2:PORT, [...]"
+            repset_hosts = None
+            # Database to authentication to.
+            #    Format:  db_auth = "AUTHENTICATION_DATABASE"
+            db_auth = None
+
 
     Example:
         server_usage.py -c configuration -d config
@@ -71,7 +72,6 @@ import lib.gen_class as gen_class
 import mongo_lib.mongo_libs as mongo_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -83,8 +83,6 @@ def help_message(**kwargs):
         message when -h option is selected.
 
     Arguments:
-        (input) **kwargs:
-            None
 
     """
 
@@ -196,13 +194,14 @@ def run_program(args_array, **kwargs):
 
     """
 
+    cmdline = gen_libs.get_inst(sys)
     args_array = dict(args_array)
     cfg = gen_libs.load_module(args_array["-c"], args_array["-d"])
     server = gen_class.System()
     server.set_host_name()
 
     try:
-        prog_lock = gen_class.ProgramLock(sys.argv, server.host_name)
+        prog_lock = gen_class.ProgramLock(cmdline.argv, server.host_name)
         proc_data = get_svr_info(server)
         proc_data.update(get_svr_mem())
         proc_data["processes"] = get_proc_mem(cfg.memory_threshold)
@@ -231,12 +230,13 @@ def main():
 
     """
 
+    cmdline = gen_libs.get_inst(sys)
     dir_chk_list = ["-d"]
     opt_req_list = ["-c", "-d"]
     opt_val_list = ["-c", "-d"]
 
     # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
+    args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list)
 
     if not gen_libs.help_func(args_array, __version__, help_message):
         if gen_libs.root_run():

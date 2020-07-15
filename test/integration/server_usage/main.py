@@ -9,7 +9,6 @@
         test/integration/server_usage/main.py
 
     Arguments:
-        None
 
 """
 
@@ -36,7 +35,6 @@ import mongo_lib.mongo_libs as mongo_libs
 import mongo_lib.mongo_class as mongo_class
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -45,10 +43,6 @@ class UnitTest(unittest.TestCase):
     """Class:  UnitTest
 
     Description:  Class which is a representation of a unit testing.
-
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:  None
 
     Methods:
         setUp -> Unit testing initilization.
@@ -71,7 +65,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -79,13 +72,12 @@ class UnitTest(unittest.TestCase):
         self.test_path = os.path.join(os.getcwd(), self.base_dir)
         self.config_path = os.path.join(self.test_path, "config")
         self.cfg = gen_libs.load_module("configuration", self.config_path)
-
         self.argv_list = [os.path.join(self.base_dir, "main.py"),
                           "-c", "configuration", "-d", self.config_path]
-
-        svr = mongo_class.Server(self.cfg.name, self.cfg.user, self.cfg.passwd,
-                                 self.cfg.host, self.cfg.port, self.cfg.auth,
-                                 self.cfg.conf_file)
+        svr = mongo_class.Server(
+            self.cfg.name, self.cfg.user, self.cfg.passwd, host=self.cfg.host,
+            port=self.cfg.port, db=self.cfg.db, auth=self.cfg.auth,
+            conf_file=self.cfg.conf_file)
         svr.connect()
 
         if self.cfg.db in svr.fetch_dbs():
@@ -103,25 +95,17 @@ class UnitTest(unittest.TestCase):
         Description:  Test inserting data into Mongo database.
 
         Arguments:
-            None
 
         """
 
+        cmdline = gen_libs.get_inst(sys)
         self.argv_list.extend(("-m", "-n"))
-        sys.argv = self.argv_list
-
+        cmdline.argv = self.argv_list
         server_usage.main()
-
         coll = mongo_libs.crt_coll_inst(self.cfg, self.cfg.db, self.cfg.coll)
         coll.connect()
 
-        if coll.coll_cnt() == 1:
-            status = True
-
-        else:
-            status = False
-
-        self.assertTrue(status)
+        self.assertTrue(coll.coll_cnt() == 1)
 
     def test_print_format(self):
 
@@ -130,11 +114,11 @@ class UnitTest(unittest.TestCase):
         Description:  Test printing formatted data.
 
         Arguments:
-            None
 
         """
 
-        sys.argv = self.argv_list
+        cmdline = gen_libs.get_inst(sys)
+        cmdline.argv = self.argv_list
 
         with gen_libs.no_std_out():
             self.assertFalse(server_usage.main())
@@ -146,12 +130,12 @@ class UnitTest(unittest.TestCase):
         Description:  Test standard out suppression.
 
         Arguments:
-            None
 
         """
 
+        cmdline = gen_libs.get_inst(sys)
         self.argv_list.append("-n")
-        sys.argv = self.argv_list
+        cmdline.argv = self.argv_list
 
         self.assertFalse(server_usage.main())
 
@@ -162,11 +146,11 @@ class UnitTest(unittest.TestCase):
         Description:  Test printing unformatted data.
 
         Arguments:
-            None
 
         """
 
-        sys.argv = self.argv_list
+        cmdline = gen_libs.get_inst(sys)
+        cmdline.argv = self.argv_list
 
         with gen_libs.no_std_out():
             self.assertFalse(server_usage.main())
@@ -179,13 +163,13 @@ class UnitTest(unittest.TestCase):
         Description:  Test arg_dir_chk_crt function.
 
         Arguments:
-            mock_run -> Mock Ref:  server_usage.run_program
 
         """
 
         mock_run.return_value = True
 
-        sys.argv = self.argv_list
+        cmdline = gen_libs.get_inst(sys)
+        cmdline.argv = self.argv_list
 
         self.assertFalse(server_usage.main())
 
@@ -197,13 +181,13 @@ class UnitTest(unittest.TestCase):
         Description:  Test arg_require function.
 
         Arguments:
-            mock_arg -> Mock Ref:  server_usage.arg_parser.arg_dir_chk_crt
 
         """
 
         mock_arg.return_value = True
 
-        sys.argv = self.argv_list
+        cmdline = gen_libs.get_inst(sys)
+        cmdline.argv = self.argv_list
 
         self.assertFalse(server_usage.main())
 
@@ -214,7 +198,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test root_run function.
 
         Arguments:
-            None
 
         """
 
@@ -230,12 +213,12 @@ class UnitTest(unittest.TestCase):
         Description:  Test help_func function.
 
         Arguments:
-            None
 
         """
 
+        cmdline = gen_libs.get_inst(sys)
         self.argv_list.append("-v")
-        sys.argv = self.argv_list
+        cmdline.argv = self.argv_list
 
         with gen_libs.no_std_out():
             self.assertFalse(server_usage.main())
@@ -247,17 +230,17 @@ class UnitTest(unittest.TestCase):
         Description:  Clean up of integration testing.
 
         Arguments:
-            None
 
         """
 
-        db = mongo_class.DB(self.cfg.name, self.cfg.user, self.cfg.passwd,
-                            self.cfg.host, self.cfg.port, self.cfg.db,
-                            self.cfg.auth, self.cfg.conf_file)
+        mongo = mongo_class.DB(
+            self.cfg.name, self.cfg.user, self.cfg.passwd, host=self.cfg.host,
+            port=self.cfg.port, db=self.cfg.db, auth=self.cfg.auth,
+            conf_file=self.cfg.conf_file)
 
-        db.db_connect(self.cfg.db)
-        db.db_cmd("dropDatabase")
-        cmds_gen.disconnect([db])
+        mongo.db_connect(self.cfg.db)
+        mongo.db_cmd("dropDatabase")
+        cmds_gen.disconnect([mongo])
 
 
 if __name__ == "__main__":

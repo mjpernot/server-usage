@@ -9,7 +9,6 @@
         test/unit/server_usage/get_svr_info.py
 
     Arguments:
-        None
 
 """
 
@@ -30,10 +29,8 @@ import mock
 # Local
 sys.path.append(os.getcwd())
 import server_usage
-import lib.gen_libs as gen_libs
 import version
 
-# Version
 __version__ = version.__version__
 
 
@@ -45,11 +42,6 @@ class System(object):
         object is used as a proxy for operating with the system.  The basic
         methods and attributes to contain information about the physical
         server.
-
-    Super-Class:  object
-
-    Sub-Classes:
-        None
 
     Methods:
         __init__ -> Class instance initilization.
@@ -68,8 +60,17 @@ class System(object):
 
         """
 
-        self.host = "HOST_NAME"
-        self.host_name = "SERVER_NAME"
+        if host:
+            self.host = host
+
+        else:
+            self.host = "HOST_NAME"
+
+        if host_name:
+            self.host_name = host_name
+
+        else:
+            self.host_name = "SERVER_NAME"
 
 
 class UnitTest(unittest.TestCase):
@@ -77,10 +78,6 @@ class UnitTest(unittest.TestCase):
     """Class:  UnitTest
 
     Description:  Class which is a representation of a unit testing.
-
-    Super-Class:  unittest.TestCase
-
-    Sub-Classes:  None
 
     Methods:
         setUp -> Unit testing initilization.
@@ -95,7 +92,6 @@ class UnitTest(unittest.TestCase):
         Description:  Initialization for unit testing.
 
         Arguments:
-            None
 
         """
 
@@ -110,7 +106,6 @@ class UnitTest(unittest.TestCase):
         Description:  Test data is returned in correct format.
 
         Arguments:
-            None
 
         """
 

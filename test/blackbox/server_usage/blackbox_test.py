@@ -9,7 +9,6 @@
         test/blackbox/server_usage/blackbox_test.py test_option other_arguments
 
     Arguments:
-        None
 
 """
 
@@ -33,7 +32,7 @@ import version
 __version__ = version.__version__
 
 
-def file_check(out_file, search_list, json_fmt=False, **kwargs):
+def file_check(out_file, search_list, json_fmt=False):
 
     """Function:  file_check
 
@@ -76,9 +75,9 @@ def file_check(out_file, search_list, json_fmt=False, **kwargs):
     return status
 
 
-def mongo_check(config_path, config_file, **kwargs):
+def mongo_check(config_path, config_file):
 
-    """Function:  file_check
+    """Function:  mongo_check
 
     Description:  Check the contents of the output file based on the items in
         the search_list variable and check to see if file is in JSON format.
@@ -91,25 +90,17 @@ def mongo_check(config_path, config_file, **kwargs):
     """
 
     status = True
-
     cfg = gen_libs.load_module(config_file, config_path)
-
     coll = mongo_libs.crt_coll_inst(cfg, cfg.db, cfg.coll)
     coll.connect()
+    status = coll.coll_cnt() == 1
+    mongo = mongo_class.DB(
+        cfg.name, cfg.user, cfg.passwd, host=cfg.host, port=cfg.port,
+        db=cfg.db, auth=cfg.auth, conf_file=cfg.conf_file)
+    mongo.db_connect(cfg.db)
+    mongo.db_cmd("dropDatabase")
 
-    if coll.coll_cnt() == 1:
-        status = True
-
-    else:
-        status = False
-
-    db = mongo_class.DB(cfg.name, cfg.user, cfg.passwd, cfg.host, cfg.port,
-                        cfg.db, cfg.auth, cfg.conf_file)
-
-    db.db_connect(cfg.db)
-    db.db_cmd("dropDatabase")
-
-    cmds_gen.disconnect([coll, db])
+    cmds_gen.disconnect([coll, mongo])
 
     return status
 
@@ -127,22 +118,22 @@ def main():
         status -> True|False - Status of checks.
 
     Arguments:
-        None
 
     """
 
+    cmdline = gen_libs.get_inst(sys)
     base_dir = "test/blackbox/server_usage"
     test_path = os.path.join(os.getcwd(), base_dir)
     config_path = os.path.join(test_path, "config")
     search_list = ["servername", "datetime", "mem_used", "tot_mem"]
-    option = sys.argv[1]
+    option = cmdline.argv[1]
 
     if option == "stdout":
-        out_file = sys.argv[2]
+        out_file = cmdline.argv[2]
         status = file_check(out_file, search_list)
 
     elif option == "json":
-        out_file = sys.argv[2]
+        out_file = cmdline.argv[2]
         status = file_check(out_file, search_list, json_fmt=True)
 
     elif option == "mongo":
