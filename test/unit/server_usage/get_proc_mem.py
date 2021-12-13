@@ -43,9 +43,9 @@ class PSUtil(object):
         psutil.process_iter class.
 
     Methods:
-        __init__ -> Class instance initilization.
-        ppid -> Mock the psutil.process_iters.ppid() function.
-        memory_percent -> Mock psutil.process_iters.memory_percent() function.
+        __init__
+        ppid
+        memory_percent
 
     """
 
@@ -116,16 +116,16 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_pass_string -> Test which passes a string for the memory argument.
-        test_pass_list -> Test which passes a list for the memory argument.
-        test_less_then_zero -> Test less then zero is passed for memory.
-        test_default_setting -> Test where default setting is used.
-        test_zero_memory -> Test where zero memory setting is checked for.
-        test_multiple_rows -> Test where multiple rows are returned.
-        test_one_row -> Test where one row is returned.
-        test_zero_rows -> Test where zero rows are returned.
-        test_get_proc_mem -> Test data is returned in correct format.
+        setUp
+        test_pass_string
+        test_pass_list
+        test_less_then_zero
+        test_default_setting
+        test_zero_memory
+        test_multiple_rows
+        test_one_row
+        test_zero_rows
+        test_get_proc_mem
 
     """
 
