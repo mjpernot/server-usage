@@ -21,7 +21,7 @@ pipeline {
                 virtualenv test_env
                 source test_env/bin/activate
                 pip2 install mock==2.0.0 --user
-                pip2 install pymongo==3.2.0 --user
+                pip2 install pymongo==3.8.0 --user
                 pip2 install psutil==5.4.3 --user
                 ./test/unit/server_usage/help_message.py
                 ./test/unit/server_usage/post_process.py
@@ -84,6 +84,11 @@ pipeline {
                     server.upload(uploadSpec)
                 }
             }
+        }
+    }
+    post {
+        always {
+            cleanWs disableDeferredWipeout: true
         }
     }
 }
