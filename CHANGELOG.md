@@ -5,6 +5,9 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [1.1.0]
+### Changed
+- config/configuration.py.TEMPLATE:  Added authenication mechanism and SSL connection entries.
+- Documentation updates.
 
 
 ## [1.0.2] - 2020-06-25
