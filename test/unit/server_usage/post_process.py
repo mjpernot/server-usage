@@ -43,13 +43,13 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_print_format -> Test with printing formatted data.
-        test_print_raw -> Test with printing unformatted data.
-        test_suppress_false -> Test with suppress option set to false.
-        test_suppress_true -> Test with suppress option set to true.
-        test_mongo_false -> Test with mongo option set to false.
-        test_mongo_true -> Test with mongo option set to true.
+        setUp
+        test_print_format
+        test_print_raw
+        test_suppress_false
+        test_suppress_true
+        test_mongo_false
+        test_mongo_true
 
     """
 
