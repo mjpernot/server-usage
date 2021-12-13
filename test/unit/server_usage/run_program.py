@@ -43,7 +43,7 @@ class ProgramLock(object):
     Description:  Class stub holder for gen_class.ProgramLock class.
 
     Methods:
-        __init__ -> Class initialization.
+        __init__
 
     """
 
@@ -54,8 +54,6 @@ class ProgramLock(object):
         Description:  Class initialization.
 
         Arguments:
-            (input) cmdline -> Argv command line.
-            (input) flavor -> Lock flavor ID.
 
         """
 
@@ -70,8 +68,8 @@ class System(object):
     Description:  Mock of the gen_class.System class.
 
     Methods:
-        __init__ -> Class instance initilization.
-        set_host_name -> Set the hostname attribute.
+        __init__
+        set_host_name
 
     """
 
@@ -82,8 +80,6 @@ class System(object):
         Description:  Initialization of an instance of the System class.
 
         Arguments:
-            (input) host -> 'localhost' or IP.
-            (input) host_name -> Host name of server.
 
         """
 
@@ -98,7 +94,6 @@ class System(object):
             from the server.
 
         Arguments:
-            (input) host_name -> Host name of server.
 
         """
 
@@ -116,9 +111,9 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_programlock_fail -> Test ProgramLock fails to lock.
-        test_run_program -> Test run_program function.
+        setUp
+        test_programlock_fail
+        test_run_program
 
     """
 
