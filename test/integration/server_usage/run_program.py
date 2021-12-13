@@ -44,12 +44,12 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_mongo -> Test inserting data into Mongo database.
-        test_print_format -> Test printing formatted data.
-        test_no_print -> Test standard out suppression.
-        test_print_raw -> Test printing unformatted data.
-        tearDown -> Clean up of integration testing.
+        setUp
+        test_mongo
+        test_print_format
+        test_no_print
+        test_print_raw
+        tearDown
 
     """
 
