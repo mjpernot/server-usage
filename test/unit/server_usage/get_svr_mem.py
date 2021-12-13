@@ -42,8 +42,8 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_get_svr_mem -> Test data is returned in correct format.
+        setUp
+        test_get_svr_mem
 
     """
 
