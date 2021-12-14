@@ -24,7 +24,6 @@ import json
 # Local
 sys.path.append(os.getcwd())
 import lib.gen_libs as gen_libs
-import lib.cmds_gen as cmds_gen
 import mongo_lib.mongo_class as mongo_class
 import mongo_lib.mongo_libs as mongo_libs
 import version
@@ -100,7 +99,7 @@ def mongo_check(config_path, config_file):
     mongo.db_connect(cfg.db)
     mongo.db_cmd("dropDatabase")
 
-    cmds_gen.disconnect([coll, mongo])
+    mongo_libs.disconnect([coll, mongo])
 
     return status
 
