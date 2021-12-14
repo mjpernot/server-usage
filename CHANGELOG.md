@@ -5,6 +5,8 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 
 ## [1.1.0]
+- Added ability to connect to MIDB with SSL connections.
+
 ### Changed
 - post_process: Added check on Mongo connection status.
 - Remove non-required \*\*kwargs from the function parameter list.
