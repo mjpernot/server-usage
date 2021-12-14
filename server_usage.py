@@ -110,7 +110,7 @@ import version
 __version__ = version.__version__
 
 
-def help_message(**kwargs):
+def help_message():
 
     """Function:  help_message
 
@@ -124,7 +124,7 @@ def help_message(**kwargs):
     print(__doc__)
 
 
-def get_svr_info(server, **kwargs):
+def get_svr_info(server):
 
     """Function:  get_svr_info
 
@@ -142,7 +142,7 @@ def get_svr_info(server, **kwargs):
             str(gen_libs.get_date()) + " " + str(gen_libs.get_time())}
 
 
-def get_svr_mem(**kwargs):
+def get_svr_mem():
 
     """Function:  get_svr_mem
 
@@ -158,7 +158,7 @@ def get_svr_mem(**kwargs):
     return {"tot_mem": svr.total, "mem_used": svr.used, "mem_per": svr.percent}
 
 
-def get_proc_mem(mem_threshold=100, **kwargs):
+def get_proc_mem(mem_threshold=100):
 
     """Function:  get_proc_mem
 
@@ -189,7 +189,7 @@ def get_proc_mem(mem_threshold=100, **kwargs):
             if p.info["memory_full_info"].uss > mem_threshold * 1024 * 1024]
 
 
-def post_process(proc_data, args_array, cfg, **kwargs):
+def post_process(proc_data, args_array, cfg):
 
     """Function:  post_process
 
@@ -217,7 +217,7 @@ def post_process(proc_data, args_array, cfg, **kwargs):
         mongo_libs.ins_doc(cfg, cfg.db, cfg.coll, proc_data)
 
 
-def run_program(args_array, **kwargs):
+def run_program(args_array):
 
     """Function:  run_program
 
