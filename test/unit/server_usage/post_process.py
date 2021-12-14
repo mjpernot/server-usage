@@ -44,6 +44,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
+        test_mongo_failed
+        test_mongo_connect
         test_print_format
         test_print_raw
         test_suppress_false
@@ -67,6 +69,42 @@ class UnitTest(unittest.TestCase):
         cfg = collections.namedtuple("Cfg", "db coll")
         self.cfg = cfg("database", "collection")
 
+    @mock.patch("server_usage.mongo_libs.ins_doc")
+    def test_mongo_failed(self, mock_mongo):
+
+        """Function:  test_mongo_failed
+
+        Description:  Test with failed connection to Mongo.
+
+        Arguments:
+
+        """
+
+        args_array = {"-n": True, "-m": True}
+        mock_mongo.return_value = (False, "Connection Failure")
+
+        with gen_libs.no_std_out():
+            self.assertFalse(
+                server_usage.post_process(
+                    self.proc_data, args_array, self.cfg))
+
+    @mock.patch("server_usage.mongo_libs.ins_doc")
+    def test_mongo_connect(self, mock_mongo):
+
+        """Function:  test_mongo_connect
+
+        Description:  Test with successful connection to Mongo.
+
+        Arguments:
+
+        """
+
+        args_array = {"-n": True, "-m": True}
+        mock_mongo.return_value = (True, None)
+
+        self.assertFalse(
+            server_usage.post_process(self.proc_data, args_array, self.cfg))
+
     @mock.patch("server_usage.gen_libs.display_data")
     def test_print_format(self, mock_display):
 
@@ -81,8 +119,8 @@ class UnitTest(unittest.TestCase):
         args_array = {"-f": True}
         mock_display.return_value = True
 
-        self.assertFalse(server_usage.post_process(self.proc_data,
-                                                   args_array, self.cfg))
+        self.assertFalse(
+            server_usage.post_process(self.proc_data, args_array, self.cfg))
 
     def test_print_raw(self):
 
@@ -97,8 +135,9 @@ class UnitTest(unittest.TestCase):
         args_array = {}
 
         with gen_libs.no_std_out():
-            self.assertFalse(server_usage.post_process(self.proc_data,
-                                                       args_array, self.cfg))
+            self.assertFalse(
+                server_usage.post_process(
+                    self.proc_data, args_array, self.cfg))
 
     def test_suppress_false(self):
 
@@ -113,8 +152,9 @@ class UnitTest(unittest.TestCase):
         args_array = {}
 
         with gen_libs.no_std_out():
-            self.assertFalse(server_usage.post_process(self.proc_data,
-                                                       args_array, self.cfg))
+            self.assertFalse(
+                server_usage.post_process(
+                    self.proc_data, args_array, self.cfg))
 
     def test_suppress_true(self):
 
@@ -128,8 +168,8 @@ class UnitTest(unittest.TestCase):
 
         args_array = {"-n": True}
 
-        self.assertFalse(server_usage.post_process(self.proc_data, args_array,
-                                                   self.cfg))
+        self.assertFalse(
+            server_usage.post_process(self.proc_data, args_array, self.cfg))
 
     def test_mongo_false(self):
 
@@ -143,8 +183,8 @@ class UnitTest(unittest.TestCase):
 
         args_array = {"-n": True}
 
-        self.assertFalse(server_usage.post_process(self.proc_data, args_array,
-                                                   self.cfg))
+        self.assertFalse(
+            server_usage.post_process(self.proc_data, args_array, self.cfg))
 
     @mock.patch("server_usage.mongo_libs.ins_doc")
     def test_mongo_true(self, mock_mongo):
@@ -158,10 +198,10 @@ class UnitTest(unittest.TestCase):
         """
 
         args_array = {"-n": True, "-m": True}
-        mock_mongo.return_value = True
+        mock_mongo.return_value = (True, None)
 
-        self.assertFalse(server_usage.post_process(self.proc_data, args_array,
-                                                   self.cfg))
+        self.assertFalse(
+            server_usage.post_process(self.proc_data, args_array, self.cfg))
 
 
 if __name__ == "__main__":
