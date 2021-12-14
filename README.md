@@ -70,13 +70,6 @@ pip install -r requirements-mongo-python-lib.txt --target mongo_lib/lib --truste
 
 # Configuration:
 
-Create configuration file.
-
-```
-cd config
-cp configuration.py.TEMPLATE configuration.py
-```
-
 Make the appropriate changes to the environment.
   * Make the appropriate changes to connect to a Mongo database.  Only required if saving the results to a Mongo database.
     - user = "USER"
@@ -111,6 +104,8 @@ Make the appropriate changes to the environment.
     - db_auth = "AUTHENTICATION_DATABASE"
 
 ```
+cd config
+cp configuration.py.TEMPLATE configuration.py
 vim configuration.py
 chmod 600 configuration.py
 ```
@@ -155,30 +150,42 @@ Install the project using the procedures in the Installation section.
 
 ### Configuration:
 
-Create configuration file.
+Make the appropriate changes to the environment.
+  * Make the appropriate changes to connect to a Mongo database.  Only required if saving the results to a Mongo database.
+    - user = "USER"
+    - japd = "PSWORD"
+    - host = "HOST_IP"
+    - name = "HOSTNAME"
+
+  * memory_threshold is amount of memory required before the process is recorded.  Value is in Megabytes.
+    - memory_threshold = 100
+
+  * Name of database and collection in Mongo.
+    - db = "sysmon"
+    - coll = "mem_usage"
+
+  * Change these entries only if required:
+    - port = 27017
+    - conf_file = None
+    - auth = True
+    - auth_db = "admin"
+    - auth_mech = "SCRAM-SHA-1"
+    - use_arg = True
+    - use_uri = False
+
+  * Notes for auth_mech configuration entry:
+    - NOTE 1:  SCRAM-SHA-256 only works for Mongodb 4.0 and better.
+    - NOTE 2:  FIPS 140-2 environment requires SCRAM-SHA-1 or SCRAM-SHA-256.
+    - NOTE 3:  MONGODB-CR is not supported in Mongodb 4.0 and better.
+
+  * If connecting to a Mongo replica set, otherwise set to None.
+    - repset = "REPLICA_SET_NAME"
+    - repset_hosts = "HOST_1:PORT, HOST_2:PORT, ..."
+    - db_auth = "AUTHENTICATION_DATABASE"
 
 ```
 cd test/integration/server_usage/config
 cp ../../../../config/configuration.py.TEMPLATE configuration.py
-```
-
-Make the appropriate changes to the environment.
-  * memory_threshold is amount of memory required before the process is recorded.  Value is in Megabytes.
-    - memory_threshold = 100
-
-  * Make the appropriate changes to connect to a Mongo database.
-    - user = "USER_NAME"
-    - passwd = "USER_PASSWORD"
-    - host = "HOST_IP"
-    - name = "HOSTNAME"
-    - db = "sysmon" --> Change to "sysmon_server_usage"
-
-  * If connecting to a Mongo replica set, otherwise set to None.
-    - db_auth = "AUTHENTICATION_DATABASE"
-    - repset = "REPLICA_SET_NAME"
-    - repset_hosts = "HOST_1:PORT, HOST_2:PORT, ..."
-
-```
 vim configuration.py
 chmod 600 configuration.py
 ```
@@ -206,23 +213,33 @@ Install the project using the procedures in the Installation section.
 
 ### Configuration:
 
-Create configuration file.
-
-```
-cd test/blackbox/server_usage/config
-cp ../../../../config/configuration.py.TEMPLATE configuration.py
-```
-
 Make the appropriate changes to the environment.
+  * Make the appropriate changes to connect to a Mongo database.  Only required if saving the results to a Mongo database.
+    - user = "USER"
+    - japd = "PSWORD"
+    - host = "HOST_IP"
+    - name = "HOSTNAME"
+
   * memory_threshold is amount of memory required before the process is recorded.  Value is in Megabytes.
     - memory_threshold = 100
 
-  * Make the appropriate changes to connect to a Mongo database.  Only required if saving the results to a Mongo database.
-    - user = "USER_NAME"
-    - passwd = "USER_PASSWORD"
-    - host = "HOST_IP"
-    - name = "HOSTNAME"
-    - db = "sysmon" --> Change to "sysmon_server_usage"
+  * Name of database and collection in Mongo.
+    - db = "sysmon"
+    - coll = "mem_usage"
+
+  * Change these entries only if required:
+    - port = 27017
+    - conf_file = None
+    - auth = True
+    - auth_db = "admin"
+    - auth_mech = "SCRAM-SHA-1"
+    - use_arg = True
+    - use_uri = False
+
+  * Notes for auth_mech configuration entry:
+    - NOTE 1:  SCRAM-SHA-256 only works for Mongodb 4.0 and better.
+    - NOTE 2:  FIPS 140-2 environment requires SCRAM-SHA-1 or SCRAM-SHA-256.
+    - NOTE 3:  MONGODB-CR is not supported in Mongodb 4.0 and better.
 
   * If connecting to a Mongo replica set, otherwise set to None.
     - repset = "REPLICA_SET_NAME"
@@ -230,6 +247,8 @@ Make the appropriate changes to the environment.
     - db_auth = "AUTHENTICATION_DATABASE"
 
 ```
+cd test/blackbox/server_usage/config
+cp ../../../../config/configuration.py.TEMPLATE configuration.py
 vim configuration.py
 chmod 600 configuration.py
 ```
