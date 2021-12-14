@@ -30,7 +30,6 @@ import mock
 sys.path.append(os.getcwd())
 import server_usage
 import lib.gen_libs as gen_libs
-import lib.cmds_gen as cmds_gen
 import mongo_lib.mongo_libs as mongo_libs
 import mongo_lib.mongo_class as mongo_class
 import version
@@ -83,10 +82,10 @@ class UnitTest(unittest.TestCase):
         if self.cfg.db in svr.fetch_dbs():
             print("ERROR:  Test environment not clean - database: %s exists"
                   % (self.cfg.db))
-            cmds_gen.disconnect([svr])
+            mongo_libs.disconnect([svr])
             self.skipTest("Pre-conditions not met.")
 
-        cmds_gen.disconnect([svr])
+        mongo_libs.disconnect([svr])
 
     def test_mongo(self):
 
@@ -240,7 +239,7 @@ class UnitTest(unittest.TestCase):
 
         mongo.db_connect(self.cfg.db)
         mongo.db_cmd("dropDatabase")
-        cmds_gen.disconnect([mongo])
+        mongo_libs.disconnect([mongo])
 
 
 if __name__ == "__main__":
