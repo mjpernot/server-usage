@@ -214,7 +214,10 @@ def post_process(proc_data, args_array, cfg):
             print(proc_data)
 
     if "-m" in args_array:
-        mongo_libs.ins_doc(cfg, cfg.db, cfg.coll, proc_data)
+        status = mongo_libs.ins_doc(cfg, cfg.db, cfg.coll, proc_data)
+
+        if not status[0]:
+            print("Error: Mongo connection -> %s" % (status[1]))
 
 
 def run_program(args_array):

@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [1.1.0]
 ### Changed
+- post_process: Added check on Mongo connection status.
 - Remove non-required \*\*kwargs from the function parameter list.
 - config/configuration.py.TEMPLATE:  Added authenication mechanism and SSL connection entries.
 - Documentation updates.
