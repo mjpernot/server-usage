@@ -6,6 +6,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [1.1.0]
 - Added ability to connect to Mongo with SSL connections.
+- Upgrade mongo-lib to v4.2.1
 
 ### Changed
 - post_process: Added check on Mongo connection status.
