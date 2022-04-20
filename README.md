@@ -90,8 +90,6 @@ Make the appropriate changes to the environment.
     - auth = True
     - auth_db = "admin"
     - auth_mech = "SCRAM-SHA-1"
-    - use_arg = True
-    - use_uri = False
 
   * Notes for auth_mech configuration entry:
     - NOTE 1:  SCRAM-SHA-256 only works for Mongodb 4.0 and better.
@@ -170,8 +168,6 @@ Make the appropriate changes to the environment.
     - auth = True
     - auth_db = "admin"
     - auth_mech = "SCRAM-SHA-1"
-    - use_arg = True
-    - use_uri = False
 
   * Notes for auth_mech configuration entry:
     - NOTE 1:  SCRAM-SHA-256 only works for Mongodb 4.0 and better.
@@ -233,8 +229,6 @@ Make the appropriate changes to the environment.
     - auth = True
     - auth_db = "admin"
     - auth_mech = "SCRAM-SHA-1"
-    - use_arg = True
-    - use_uri = False
 
   * Notes for auth_mech configuration entry:
     - NOTE 1:  SCRAM-SHA-256 only works for Mongodb 4.0 and better.
