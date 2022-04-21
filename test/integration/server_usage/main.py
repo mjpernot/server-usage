@@ -74,7 +74,7 @@ class UnitTest(unittest.TestCase):
         self.argv_list = [os.path.join(self.base_dir, "main.py"),
                           "-c", "configuration", "-d", self.config_path]
         svr = mongo_class.Server(
-            self.cfg.name, self.cfg.user, self.cfg.passwd, host=self.cfg.host,
+            self.cfg.name, self.cfg.user, self.cfg.japd, host=self.cfg.host,
             port=self.cfg.port, db=self.cfg.db, auth=self.cfg.auth,
             conf_file=self.cfg.conf_file)
         svr.connect()
@@ -233,7 +233,7 @@ class UnitTest(unittest.TestCase):
         """
 
         mongo = mongo_class.DB(
-            self.cfg.name, self.cfg.user, self.cfg.passwd, host=self.cfg.host,
+            self.cfg.name, self.cfg.user, self.cfg.japd, host=self.cfg.host,
             port=self.cfg.port, db=self.cfg.db, auth=self.cfg.auth,
             conf_file=self.cfg.conf_file)
 
