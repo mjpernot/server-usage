@@ -67,11 +67,8 @@ class UnitTest(unittest.TestCase):
         self.test_path = os.path.join(os.getcwd(), self.base_dir)
         self.config_path = os.path.join(self.test_path, "config")
         self.cfg = gen_libs.load_module("configuration", self.config_path)
-
-        svr = mongo_class.Server(
-            self.cfg.name, self.cfg.user, self.cfg.japd, host=self.cfg.host,
-            port=self.cfg.port, auth=self.cfg.auth,
-            conf_file=self.cfg.conf_file)
+        svr = mongo_libs.create_instance(
+            "configuration", self.config_path, mongo_class.Server)
         svr.connect()
 
         if self.cfg.db in svr.fetch_dbs():
@@ -141,10 +138,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mongo = mongo_class.DB(
-            self.cfg.name, self.cfg.user, self.cfg.japd, host=self.cfg.host,
-            port=self.cfg.port, db=self.cfg.db, auth=self.cfg.auth,
-            conf_file=self.cfg.conf_file)
+        mongo = mongo_libs.create_instance(
+            "configuration", self.config_path, mongo_class.DB)
         mongo.db_connect(self.cfg.db)
         mongo.db_cmd("dropDatabase")
         mongo_libs.disconnect([mongo])
