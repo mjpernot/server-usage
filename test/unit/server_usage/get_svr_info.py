@@ -44,7 +44,7 @@ class System(object):
         server.
 
     Methods:
-        __init__ -> Class instance initilization.
+        __init__
 
     """
 
@@ -55,8 +55,6 @@ class System(object):
         Description:  Initialization of an instance of the System class.
 
         Arguments:
-            (input) host -> 'localhost' or IP.
-            (input) host_name -> Host name of server.
 
         """
 
@@ -80,8 +78,8 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_get_svr_info -> Test data is returned in correct format.
+        setUp
+        test_get_svr_info
 
     """
 

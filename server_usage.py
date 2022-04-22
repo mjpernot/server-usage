@@ -11,46 +11,79 @@
     Arguments:
         -c configuration => Configuration file.  Required argument.
         -d path => Directory path for "-c" option.  Required argument.
-        -f => Format the output to standard out.
+
         -n => Do not print results to standard out.
         -m => Save results to Mongo database.
+        -f => Format the output to standard out.
+
         -v => Display version of this program.
         -h => Help and usage message.
 
         NOTE 1:  -v and -h overrides all other options.
 
     Notes:
-        Configuration file format (config/configuration.py.TEMPLATE).
-            The Mongo database section is only required if saving the results
-            to the database.
+        Mongo configuration file format (config/mongo.py.TEMPLATE).
+        The configuration file format for the Mongo connection used for
+        inserting data into a database.
 
-            # Mongo database section.
-            # User connection information.
-            user = "USER_NAME"
-            passwd = "USER_PASSWORD"
-            # Database host information.
+        There are two ways to connect methods:  single Mongo database or a
+        Mongo replica set.
+
+            Single Configuration file for Mongo Database Server.
+            user = "USER"
+            japd = "PSWORD"
             host = "HOST_IP"
             name = "HOSTNAME"
-            # Is amount of memory required before the process is recorded.
-            #    Value is in Megabytes.
-            memory_threshold = 100
-            # Database and Collection names
-            db = "sysmon"
-            coll = "mem_usage"
-            # Replica Set Mongo configuration settings.
-            # By default all settings are set to None.
-            #    None means the Mongo database is not part of a replica set.
-            # Replica set name.
-            #    Format:  repset = "REPLICA_SET_NAME"
-            repset = None
-            # Replica host listing.  List of mongo databases in replica set.
-            # Set to None if not connecting to a Mongo replica set.
-            #    Format:  repset_hosts = "HOST1:PORT, HOST2:PORT, [...]"
-            repset_hosts = None
-            # Database to authentication to.
-            #    Format:  db_auth = "AUTHENTICATION_DATABASE"
-            db_auth = None
+            port = 27017
+            conf_file = None
 
+            memory_threshold = 100
+            db = "sysmon"
+
+            coll = "mem_usage"
+            auth = True
+            auth_db = "admin"
+            auth_mech = "SCRAM-SHA-1"
+
+            Replica set connection:  Same format as above, but with these
+                additional entries at the end of the configuration file.  By
+                default all these entries are set to None to represent not
+                connecting to a replica set.
+
+            repset = "REPLICA_SET_NAME"
+            repset_hosts = "HOST1:PORT, HOST2:PORT, [...]"
+            db_auth = "AUTHENTICATION_DATABASE"
+
+            Note:  If using SSL connections then set one or more of the
+                following entries.  This will automatically enable SSL
+                connections. Below are the configuration settings for SSL
+                connections.  See configuration file for details on each entry:
+
+            ssl_client_ca = None
+            ssl_client_key = None
+            ssl_client_cert = None
+            ssl_client_phrase = None
+
+            FIPS Environment for Mongo:  If operating in a FIPS 104-2
+                environment, this package will require at least a minimum of
+                pymongo==3.8.0 or better.  It will also require a manual change
+                to the auth.py module in the pymongo package.  See below for
+                changes to auth.py.  In addition, other modules may require to
+                have the same modification as the auth.py module.  If a
+                stacktrace occurs and it states "= hashlib.md5()" is the
+                problem, then note the module name "= hashlib.md5()" is in and
+                make the same change as in auth.py:  "usedforsecurity=False".
+            - Locate the auth.py file python installed packages on the system
+                in the pymongo package directory.
+            - Edit the file and locate the "_password_digest" function.
+            - In the "_password_digest" function there is an line that should
+                match: "md5hash = hashlib.md5()".  Change it to
+                "md5hash = hashlib.md5(usedforsecurity=False)".
+            - Lastly, it will require the Mongo configuration file entry
+                auth_mech to be set to: SCRAM-SHA-1 or SCRAM-SHA-256.
+
+        Configuration modules -> Name is runtime dependent as it can be used to
+            connect to different databases with different names.
 
     Example:
         server_usage.py -c configuration -d config
@@ -75,7 +108,7 @@ import version
 __version__ = version.__version__
 
 
-def help_message(**kwargs):
+def help_message():
 
     """Function:  help_message
 
@@ -89,7 +122,7 @@ def help_message(**kwargs):
     print(__doc__)
 
 
-def get_svr_info(server, **kwargs):
+def get_svr_info(server):
 
     """Function:  get_svr_info
 
@@ -107,7 +140,7 @@ def get_svr_info(server, **kwargs):
             str(gen_libs.get_date()) + " " + str(gen_libs.get_time())}
 
 
-def get_svr_mem(**kwargs):
+def get_svr_mem():
 
     """Function:  get_svr_mem
 
@@ -123,7 +156,7 @@ def get_svr_mem(**kwargs):
     return {"tot_mem": svr.total, "mem_used": svr.used, "mem_per": svr.percent}
 
 
-def get_proc_mem(mem_threshold=100, **kwargs):
+def get_proc_mem(mem_threshold=100):
 
     """Function:  get_proc_mem
 
@@ -154,7 +187,7 @@ def get_proc_mem(mem_threshold=100, **kwargs):
             if p.info["memory_full_info"].uss > mem_threshold * 1024 * 1024]
 
 
-def post_process(proc_data, args_array, cfg, **kwargs):
+def post_process(proc_data, args_array, cfg):
 
     """Function:  post_process
 
@@ -179,10 +212,13 @@ def post_process(proc_data, args_array, cfg, **kwargs):
             print(proc_data)
 
     if "-m" in args_array:
-        mongo_libs.ins_doc(cfg, cfg.db, cfg.coll, proc_data)
+        status = mongo_libs.ins_doc(cfg, cfg.db, cfg.coll, proc_data)
+
+        if not status[0]:
+            print("Error: Mongo connection -> %s" % (status[1]))
 
 
-def run_program(args_array, **kwargs):
+def run_program(args_array):
 
     """Function:  run_program
 

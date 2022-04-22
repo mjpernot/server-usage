@@ -30,7 +30,6 @@ import mock
 sys.path.append(os.getcwd())
 import server_usage
 import lib.gen_libs as gen_libs
-import lib.cmds_gen as cmds_gen
 import mongo_lib.mongo_libs as mongo_libs
 import mongo_lib.mongo_class as mongo_class
 import version
@@ -45,16 +44,16 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_mongo -> Test inserting data into Mongo database.
-        test_print_format -> Test printing formatted data.
-        test_no_print -> Test standard out suppression.
-        test_print_raw -> Test printing unformatted data.
-        test_arg_dir_chk_crt_func -> Test arg_dir_chk_crt function.
-        test_arg_require_func -> Test arg_require function.
-        test_root_run_func -> Test root_run function.
-        test_help_func -> Test help_func function.
-        tearDown -> Clean up of integration testing.
+        setUp
+        test_mongo
+        test_print_format
+        test_no_print
+        test_print_raw
+        test_arg_dir_chk_crt_func
+        test_arg_require_func
+        test_root_run_func
+        test_help_func
+        tearDown
 
     """
 
@@ -74,19 +73,17 @@ class UnitTest(unittest.TestCase):
         self.cfg = gen_libs.load_module("configuration", self.config_path)
         self.argv_list = [os.path.join(self.base_dir, "main.py"),
                           "-c", "configuration", "-d", self.config_path]
-        svr = mongo_class.Server(
-            self.cfg.name, self.cfg.user, self.cfg.passwd, host=self.cfg.host,
-            port=self.cfg.port, db=self.cfg.db, auth=self.cfg.auth,
-            conf_file=self.cfg.conf_file)
+        svr = mongo_libs.create_instance(
+            "configuration", self.config_path, mongo_class.Server)
         svr.connect()
 
         if self.cfg.db in svr.fetch_dbs():
             print("ERROR:  Test environment not clean - database: %s exists"
                   % (self.cfg.db))
-            cmds_gen.disconnect([svr])
+            mongo_libs.disconnect([svr])
             self.skipTest("Pre-conditions not met.")
 
-        cmds_gen.disconnect([svr])
+        mongo_libs.disconnect([svr])
 
     def test_mongo(self):
 
@@ -233,14 +230,11 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mongo = mongo_class.DB(
-            self.cfg.name, self.cfg.user, self.cfg.passwd, host=self.cfg.host,
-            port=self.cfg.port, db=self.cfg.db, auth=self.cfg.auth,
-            conf_file=self.cfg.conf_file)
-
+        mongo = mongo_libs.create_instance(
+            "configuration", self.config_path, mongo_class.DB)
         mongo.db_connect(self.cfg.db)
         mongo.db_cmd("dropDatabase")
-        cmds_gen.disconnect([mongo])
+        mongo_libs.disconnect([mongo])
 
 
 if __name__ == "__main__":
