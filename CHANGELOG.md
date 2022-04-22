@@ -4,10 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [1.1.0]
+- Added ability to connect to Mongo with SSL connections.
+- Upgrade mongo-lib to v4.2.1
+
+### Changed
+- post_process: Added check on Mongo connection status.
+- Remove non-required \*\*kwargs from the function parameter list.
+- config/configuration.py.TEMPLATE:  Added authenication mechanism and SSL connection entries and removed use_arg and use_uri entries.
+- Documentation updates.
+
+
 ## [1.0.2] - 2020-06-25
 ### Fixed
-- run_program:  Fixed handling command line arguments from SonarQube scan finding.
-- main:  Fixed handling command line arguments from SonarQube scan finding.
+- main, run_program:  Fixed handling command line arguments.
 
 ### Changed
 - configuration.py.TEMPLATE:  Changed format of configuration file for Mongo connection.
@@ -16,8 +26,7 @@ The format is based on "Keep a Changelog".  This project adheres to Semantic Ver
 
 ## [1.0.1] - 2019-05-17
 ### Fixed
-- run_program:  Fixed problem with mutable default arguments issue.
-- post_process:  Fixed problem with mutable default arguments issue.
+- run_program, post_process:  Fixed problem with mutable default arguments issue.
 
 
 ## [1.0.0] - 2019-03-05

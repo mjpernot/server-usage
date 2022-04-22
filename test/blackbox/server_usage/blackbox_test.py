@@ -24,7 +24,6 @@ import json
 # Local
 sys.path.append(os.getcwd())
 import lib.gen_libs as gen_libs
-import lib.cmds_gen as cmds_gen
 import mongo_lib.mongo_class as mongo_class
 import mongo_lib.mongo_libs as mongo_libs
 import version
@@ -94,13 +93,12 @@ def mongo_check(config_path, config_file):
     coll = mongo_libs.crt_coll_inst(cfg, cfg.db, cfg.coll)
     coll.connect()
     status = coll.coll_cnt() == 1
-    mongo = mongo_class.DB(
-        cfg.name, cfg.user, cfg.passwd, host=cfg.host, port=cfg.port,
-        db=cfg.db, auth=cfg.auth, conf_file=cfg.conf_file)
+    mongo = mongo_libs.create_instance(
+        config_file, config_path, mongo_class.DB)
     mongo.db_connect(cfg.db)
     mongo.db_cmd("dropDatabase")
 
-    cmds_gen.disconnect([coll, mongo])
+    mongo_libs.disconnect([coll, mongo])
 
     return status
 
@@ -109,7 +107,7 @@ def main():
 
     """Function:  main
 
-    Description:  Control the blackbox testing of package_admin.py program.
+    Description:  Control the blackbox testing of server_usage.py program.
 
     Variables:
         base_dir -> Directory path to blackbox testing directory.

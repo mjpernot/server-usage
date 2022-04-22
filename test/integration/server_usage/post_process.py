@@ -29,7 +29,6 @@ else:
 sys.path.append(os.getcwd())
 import server_usage
 import lib.gen_libs as gen_libs
-import lib.cmds_gen as cmds_gen
 import mongo_lib.mongo_libs as mongo_libs
 import mongo_lib.mongo_class as mongo_class
 import version
@@ -44,11 +43,11 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_raw_print -> Test with printing unformatted data.
-        test_format_print -> Test printing formatted data.
-        test_mongo_insert -> Test inserting data into Mongo database.
-        tearDown -> Clean up of integration testing.
+        setUp
+        test_raw_print
+        test_format_print
+        test_mongo_insert
+        tearDown
 
     """
 
@@ -68,20 +67,17 @@ class UnitTest(unittest.TestCase):
         self.test_path = os.path.join(os.getcwd(), self.base_dir)
         self.config_path = os.path.join(self.test_path, "config")
         self.cfg = gen_libs.load_module("configuration", self.config_path)
-
-        svr = mongo_class.Server(
-            self.cfg.name, self.cfg.user, self.cfg.passwd, host=self.cfg.host,
-            port=self.cfg.port, auth=self.cfg.auth,
-            conf_file=self.cfg.conf_file)
+        svr = mongo_libs.create_instance(
+            "configuration", self.config_path, mongo_class.Server)
         svr.connect()
 
         if self.cfg.db in svr.fetch_dbs():
             print("ERROR:  Test environment not clean - database: %s exists"
                   % (self.cfg.db))
-            cmds_gen.disconnect([svr])
+            mongo_libs.disconnect([svr])
             self.skipTest("Pre-conditions not met.")
 
-        cmds_gen.disconnect([svr])
+        mongo_libs.disconnect([svr])
 
     def test_raw_print(self):
 
@@ -142,13 +138,11 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        mongo = mongo_class.DB(
-            self.cfg.name, self.cfg.user, self.cfg.passwd, host=self.cfg.host,
-            port=self.cfg.port, db=self.cfg.db, auth=self.cfg.auth,
-            conf_file=self.cfg.conf_file)
+        mongo = mongo_libs.create_instance(
+            "configuration", self.config_path, mongo_class.DB)
         mongo.db_connect(self.cfg.db)
         mongo.db_cmd("dropDatabase")
-        cmds_gen.disconnect([mongo])
+        mongo_libs.disconnect([mongo])
 
 
 if __name__ == "__main__":

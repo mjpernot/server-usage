@@ -41,8 +41,6 @@ def capture_mem(mem):
     Description:  Used to test the results returned from get_proc_mem.
 
     Arguments:
-        (input) mem -> Memory threshold for a process, in MBs.
-        (output) -> List of processes that meet the memory threshold.
 
     """
 
@@ -60,14 +58,14 @@ class UnitTest(unittest.TestCase):
     Description:  Class which is a representation of a unit testing.
 
     Methods:
-        setUp -> Unit testing initilization.
-        test_pass_zero -> Test which passes a zero for the memory argument.
-        test_pass_negative -> Test which passes a negative for memory argument.
-        test_pass_list -> Test which passes a list for the memory argument.
-        test_pass_dict -> Test which passes a dict for the memory argument.
-        test_pass_int -> Test which passes an integer for the memory argument.
-        test_pass_string -> Test which passes a string for the memory argument.
-        test_get_proc_mem -> Test data is returned in correct format.
+        setUp
+        test_pass_zero
+        test_pass_negative
+        test_pass_list
+        test_pass_dict
+        test_pass_int
+        test_pass_string
+        test_get_proc_mem
 
     """
 
