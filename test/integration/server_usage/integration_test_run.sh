@@ -6,10 +6,9 @@
 
 echo ""
 echo "Integration test:  server_usage.py"
-test/integration/server_usage/get_svr_info.py
-test/integration/server_usage/get_svr_mem.py
-test/integration/server_usage/get_proc_mem.py
-test/integration/server_usage/post_process.py
-test/integration/server_usage/run_program.py
-test/integration/server_usage/main.py
-
+/usr/bin/python test/integration/server_usage/get_svr_info.py
+/usr/bin/python test/integration/server_usage/get_svr_mem.py
+/usr/bin/python test/integration/server_usage/get_proc_mem.py
+/usr/bin/python test/integration/server_usage/post_process.py
+/usr/bin/python test/integration/server_usage/run_program.py
+/usr/bin/python test/integration/server_usage/main.py
