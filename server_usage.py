@@ -96,8 +96,6 @@ from __future__ import absolute_import
 
 # Standard
 import sys
-
-# Third-party
 import psutil
 
 # Local

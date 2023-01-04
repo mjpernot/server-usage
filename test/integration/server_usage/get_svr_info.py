@@ -18,8 +18,6 @@ import sys
 import os
 import unittest
 
-# Third-party
-
 # Local
 sys.path.append(os.getcwd())
 import server_usage
