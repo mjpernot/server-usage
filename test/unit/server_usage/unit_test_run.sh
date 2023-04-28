@@ -6,11 +6,11 @@
 
 echo ""
 echo "Unit test:  server_usage.py"
-test/unit/server_usage/help_message.py
-test/unit/server_usage/get_svr_info.py
-test/unit/server_usage/get_svr_mem.py
-test/unit/server_usage/get_proc_mem.py
-test/unit/server_usage/post_process.py
-test/unit/server_usage/run_program.py
-test/unit/server_usage/main.py
+/usr/bin/python test/unit/server_usage/help_message.py
+/usr/bin/python test/unit/server_usage/get_svr_info.py
+/usr/bin/python test/unit/server_usage/get_svr_mem.py
+/usr/bin/python test/unit/server_usage/get_proc_mem.py
+/usr/bin/python test/unit/server_usage/post_process.py
+/usr/bin/python test/unit/server_usage/run_program.py
+/usr/bin/python test/unit/server_usage/main.py
 

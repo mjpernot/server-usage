@@ -4,7 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
-## [1.1.0]
+## [1.1.1] - 2022-12-01
+- Updated to work in Python 3 too
+- Upgraded python-lib to v2.9.4
+- Upgraded mongo-lib to v4.2.2
+ 
+### Changed
+- Converted imports to use Python 2.7 or Python 3.
+
+
+## [1.1.0] - 2022-05-13
 - Added ability to connect to Mongo with SSL connections.
 - Upgrade mongo-lib to v4.2.1
 
