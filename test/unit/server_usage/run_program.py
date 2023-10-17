@@ -29,6 +29,44 @@ import version
 __version__ = version.__version__
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        get_val
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.cmdline = None
+        self.args = dict()
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args.get(skey, def_val)
+
+
 class ProgramLock(object):
 
     """Class:  ProgramLock
@@ -122,7 +160,8 @@ class UnitTest(unittest.TestCase):
 
         cfg = collections.namedtuple("Cfg", "memory_threshold")
         self.cfg = cfg(100)
-        self.args = {"-c": "config_file", "-d": "config_dir"}
+        self.args = ArgParser()
+        self.args.args_array = {"-c": "config_file", "-d": "config_dir"}
         self.proglock = ProgramLock(["cmdline"], "FlavorID")
 
     @mock.patch("server_usage.gen_class.ProgramLock")
@@ -165,13 +204,13 @@ class UnitTest(unittest.TestCase):
         mock_class.ProgramLock.return_value = self.proglock
         mock_class.System.return_value = System()
         mock_load.return_value = self.cfg
-        mock_info.return_value = {"servername": "Server_Name",
-                                  "datetime": "2018-10-17 12:00:01"}
-        mock_mem.return_value = {"tot_mem": 100000000, "mem_used": 80000000,
-                                 "mem_per": 80}
-        mock_proc.return_value = [{"pid": 100, "ppid": 10, "proc": "proc_name",
-                                   "uss_mem": 20000000,
-                                   "per_used": "%.2f" % 25.15}]
+        mock_info.return_value = {
+            "servername": "Server_Name", "datetime": "2018-10-17 12:00:01"}
+        mock_mem.return_value = {
+            "tot_mem": 100000000, "mem_used": 80000000, "mem_per": 80}
+        mock_proc.return_value = [
+            {"pid": 100, "ppid": 10, "proc": "proc_name", "uss_mem": 20000000,
+             "per_used": "%.2f" % 25.15}]
         mock_post.return_value = True
 
         self.assertFalse(server_usage.run_program(self.args))

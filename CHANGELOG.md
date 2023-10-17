@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [1.2.0] - 2023-10-17
+- Replaced the arg_parser code with gen_class.ArgParser code.
+- Upgraded python-lib to v2.10.1
+
+### Changed
+- main, run_program, post_process: Replaced the arg_parser code with gen_class.ArgParser code.
+- main, run_program: Removed gen_libs.get_inst call.
+- Documentation updates.
+
+
 ## [1.1.1] - 2022-12-01
 - Updated to work in Python 3 too
 - Upgraded python-lib to v2.9.4

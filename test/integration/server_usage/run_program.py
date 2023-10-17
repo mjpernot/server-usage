@@ -30,6 +30,44 @@ import version
 __version__ = version.__version__
 
 
+class ArgParser(object):
+
+    """Class:  ArgParser
+
+    Description:  Class stub holder for gen_class.ArgParser class.
+
+    Methods:
+        __init__
+        get_val
+
+    """
+
+    def __init__(self):
+
+        """Method:  __init__
+
+        Description:  Class initialization.
+
+        Arguments:
+
+        """
+
+        self.cmdline = None
+        self.args = dict()
+
+    def get_val(self, skey, def_val=None):
+
+        """Method:  get_val
+
+        Description:  Method stub holder for gen_class.ArgParser.get_val.
+
+        Arguments:
+
+        """
+
+        return self.args.get(skey, def_val)
+
+
 class UnitTest(unittest.TestCase):
 
     """Class:  UnitTest
@@ -60,7 +98,12 @@ class UnitTest(unittest.TestCase):
         self.test_path = os.path.join(os.getcwd(), self.base_dir)
         self.config_path = os.path.join(self.test_path, "config")
         self.cfg = gen_libs.load_module("configuration", self.config_path)
-        self.args_array = {"-c": "configuration", "-d": self.config_path}
+        self.args = ArgParser()
+        self.args2 = ArgParser()
+        self.args.args_array = {"-c": "configuration", "-d": self.config_path}
+        self.args2.args_array = {
+            "-c": "configuration", "-d": self.config_path, "-n": True,
+            "-m": True}
         svr = mongo_libs.create_instance(
             "configuration", self.config_path, mongo_class.Server)
         svr.connect()
@@ -83,9 +126,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args_array.update({"-n": True, "-m": True})
-
-        server_usage.run_program(self.args_array)
+        server_usage.run_program(self.args2)
 
         coll = mongo_libs.crt_coll_inst(self.cfg, self.cfg.db, self.cfg.coll)
         coll.connect()
@@ -103,7 +144,7 @@ class UnitTest(unittest.TestCase):
         """
 
         with gen_libs.no_std_out():
-            self.assertFalse(server_usage.run_program(self.args_array))
+            self.assertFalse(server_usage.run_program(self.args))
 
     def test_no_print(self):
 
@@ -115,9 +156,9 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args_array["-n"] = True
+        self.args.args_array["-n"] = True
 
-        self.assertFalse(server_usage.run_program(self.args_array))
+        self.assertFalse(server_usage.run_program(self.args))
 
     def test_print_raw(self):
 
@@ -130,7 +171,7 @@ class UnitTest(unittest.TestCase):
         """
 
         with gen_libs.no_std_out():
-            self.assertFalse(server_usage.run_program(self.args_array))
+            self.assertFalse(server_usage.run_program(self.args))
 
     def tearDown(self):
 
