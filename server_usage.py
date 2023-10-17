@@ -193,7 +193,7 @@ def get_proc_mem(mem_threshold=100):
             if p.info["memory_full_info"].uss > mem_threshold * 1024 * 1024]
 
 
-def post_process(proc_data, args_array, cfg):
+def post_process(proc_data, args, cfg):
 
     """Function:  post_process
 
@@ -202,29 +202,28 @@ def post_process(proc_data, args_array, cfg):
 
     Arguments:
         (input) proc_data -> Dictionary of process data
-        (input) args_array -> Dictionary of command line options and values
+        (input) args -> ArgParser class instance
         (input) cfg -> Configuration module settings
 
     """
 
     proc_data = dict(proc_data)
-    args_array = dict(args_array)
 
-    if "-n" not in args_array:
-        if "-f" in args_array:
+    if not args.arg_exist("-n"):
+        if args.arg_exist("-f"):
             gen_libs.display_data(proc_data)
 
         else:
             print(proc_data)
 
-    if "-m" in args_array:
+    if args.arg_exist("-m"):
         status = mongo_libs.ins_doc(cfg, cfg.db, cfg.coll, proc_data)
 
         if not status[0]:
             print("Error: Mongo connection -> %s" % (status[1]))
 
 
-def run_program(args_array):
+def run_program(args):
 
     """Function:  run_program
 
@@ -232,12 +231,11 @@ def run_program(args_array):
         Create a program lock to prevent other instantiations from running.
 
     Arguments:
-        (input) args_array -> Dictionary of command line options and values
+        (input) args -> ArgParser class instance
 
     """
 
-    args_array = dict(args_array)
-    cfg = gen_libs.load_module(args_array["-c"], args_array["-d"])
+    cfg = gen_libs.load_module(args.get_val("-c"), args.get_val("-d"))
     server = gen_class.System()
     server.set_host_name()
 
@@ -246,7 +244,7 @@ def run_program(args_array):
         proc_data = get_svr_info(server)
         proc_data.update(get_svr_mem())
         proc_data["processes"] = get_proc_mem(cfg.memory_threshold)
-        post_process(proc_data, args_array, cfg)
+        post_process(proc_data, args, cfg)
         del prog_lock
 
     except gen_class.SingleInstanceException:
@@ -262,7 +260,7 @@ def main():
         line arguments and values.
 
     Variables:
-        dir_chk_list -> contains options which will be directories
+        dir_perms_chk -> contains directories and their octal permissions
         opt_req_list -> contains options that are required for the program
         opt_val_list -> contains options which require values
 
@@ -271,18 +269,18 @@ def main():
 
     """
 
-    dir_chk_list = ["-d"]
+    dir_perms_chk = {"-d": 5}
     opt_req_list = ["-c", "-d"]
     opt_val_list = ["-c", "-d"]
 
     # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(sys.argv, opt_val_list)
+    args = gen_class.ArgParser(sys.argv, opt_val=opt_val_list, do_parse=True)
 
-    if not gen_libs.help_func(args_array, __version__, help_message):
+    if not gen_libs.help_func(args, __version__, help_message):
         if gen_libs.root_run():
-            if not arg_parser.arg_require(args_array, opt_req_list) \
-               and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
-                run_program(args_array)
+            if args.arg_require(opt_req=opt_req_list)           \
+               and args.arg_dir_chk(dir_perms_chk=dir_perms_chk):
+                run_program(args)
 
         else:
             print("Error:  Must run program as root.")
