@@ -100,14 +100,12 @@ import psutil
 
 # Local
 try:
-    from .lib import arg_parser
     from .lib import gen_libs
     from .lib import gen_class
     from .mongo_lib import mongo_libs
     from . import version
 
 except (ValueError, ImportError) as err:
-    import lib.arg_parser as arg_parser
     import lib.gen_libs as gen_libs
     import lib.gen_class as gen_class
     import mongo_lib.mongo_libs as mongo_libs
@@ -138,8 +136,8 @@ def get_svr_info(server):
         header.
 
     Arguments:
-        (input) server -> Instance of the Server class.
-        (output) -> Dictionary holding the basic server information.
+        (input) server -> Instance of the Server class
+        (output) -> Dictionary holding the basic server information
 
     """
 
@@ -155,7 +153,7 @@ def get_svr_mem():
     Description:  Retrieve and return server memory information and status.
 
     Arguments:
-        (output) -> Dictionary holding the basic server information.
+        (output) -> Dictionary holding the basic server information
 
     """
 
@@ -174,8 +172,8 @@ def get_proc_mem(mem_threshold=100):
             the "rss" attribute.
 
     Arguments:
-        (input) mem_threshold -> Memory threshold for a process, in MBs.
-        (output) -> List of processes that meet the memory threshold.
+        (input) mem_threshold -> Memory threshold for a process, in MBs
+        (output) -> List of processes that meet the memory threshold
 
     """
 
@@ -195,7 +193,7 @@ def get_proc_mem(mem_threshold=100):
             if p.info["memory_full_info"].uss > mem_threshold * 1024 * 1024]
 
 
-def post_process(proc_data, args_array, cfg):
+def post_process(proc_data, args, cfg):
 
     """Function:  post_process
 
@@ -203,30 +201,29 @@ def post_process(proc_data, args_array, cfg):
         requested.
 
     Arguments:
-        (input) proc_data -> Dictionary of process data.
-        (input) args_array -> Dictionary of command line options and values.
-        (input) cfg -> Configuration module settings.
+        (input) proc_data -> Dictionary of process data
+        (input) args -> ArgParser class instance
+        (input) cfg -> Configuration module settings
 
     """
 
     proc_data = dict(proc_data)
-    args_array = dict(args_array)
 
-    if "-n" not in args_array:
-        if "-f" in args_array:
+    if not args.arg_exist("-n"):
+        if args.arg_exist("-f"):
             gen_libs.display_data(proc_data)
 
         else:
             print(proc_data)
 
-    if "-m" in args_array:
+    if args.arg_exist("-m"):
         status = mongo_libs.ins_doc(cfg, cfg.db, cfg.coll, proc_data)
 
         if not status[0]:
             print("Error: Mongo connection -> %s" % (status[1]))
 
 
-def run_program(args_array):
+def run_program(args):
 
     """Function:  run_program
 
@@ -234,22 +231,20 @@ def run_program(args_array):
         Create a program lock to prevent other instantiations from running.
 
     Arguments:
-        (input) args_array -> Dictionary of command line options and values.
+        (input) args -> ArgParser class instance
 
     """
 
-    cmdline = gen_libs.get_inst(sys)
-    args_array = dict(args_array)
-    cfg = gen_libs.load_module(args_array["-c"], args_array["-d"])
+    cfg = gen_libs.load_module(args.get_val("-c"), args.get_val("-d"))
     server = gen_class.System()
     server.set_host_name()
 
     try:
-        prog_lock = gen_class.ProgramLock(cmdline.argv, server.host_name)
+        prog_lock = gen_class.ProgramLock(sys.argv, server.host_name)
         proc_data = get_svr_info(server)
         proc_data.update(get_svr_mem())
         proc_data["processes"] = get_proc_mem(cfg.memory_threshold)
-        post_process(proc_data, args_array, cfg)
+        post_process(proc_data, args, cfg)
         del prog_lock
 
     except gen_class.SingleInstanceException:
@@ -265,28 +260,27 @@ def main():
         line arguments and values.
 
     Variables:
-        dir_chk_list -> contains options which will be directories.
-        opt_req_list -> contains options that are required for the program.
-        opt_val_list -> contains options which require values.
+        dir_perms_chk -> contains directories and their octal permissions
+        opt_req_list -> contains options that are required for the program
+        opt_val_list -> contains options which require values
 
     Arguments:
-        (input) argv -> Arguments from the command line.
+        (input) argv -> Arguments from the command line
 
     """
 
-    cmdline = gen_libs.get_inst(sys)
-    dir_chk_list = ["-d"]
+    dir_perms_chk = {"-d": 5}
     opt_req_list = ["-c", "-d"]
     opt_val_list = ["-c", "-d"]
 
     # Process argument list from command line.
-    args_array = arg_parser.arg_parse2(cmdline.argv, opt_val_list)
+    args = gen_class.ArgParser(sys.argv, opt_val=opt_val_list, do_parse=True)
 
-    if not gen_libs.help_func(args_array, __version__, help_message):
+    if not gen_libs.help_func(args, __version__, help_message):
         if gen_libs.root_run():
-            if not arg_parser.arg_require(args_array, opt_req_list) \
-               and not arg_parser.arg_dir_chk_crt(args_array, dir_chk_list):
-                run_program(args_array)
+            if args.arg_require(opt_req=opt_req_list)           \
+               and args.arg_dir_chk(dir_perms_chk=dir_perms_chk):
+                run_program(args)
 
         else:
             print("Error:  Must run program as root.")
