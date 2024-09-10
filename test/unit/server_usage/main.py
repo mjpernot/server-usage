@@ -38,6 +38,7 @@ class ArgParser(object):
         __init__
         arg_dir_chk
         arg_require
+        arg_parse2
 
     """
 
@@ -57,6 +58,7 @@ class ArgParser(object):
         self.opt_req2 = True
         self.dir_perms_chk = None
         self.dir_perms_chk2 = True
+        self.argparse2 = True
 
     def arg_dir_chk(self, dir_perms_chk):
 
@@ -86,6 +88,18 @@ class ArgParser(object):
 
         return self.opt_req2
 
+    def arg_parse2(self):
+
+        """Method:  arg_parse2
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_parse2.
+
+        Arguments:
+
+        """
+
+        return self.argparse2
+
 
 class UnitTest(unittest.TestCase):
 
@@ -95,6 +109,8 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
+        test_arg_parse2_false
+        test_arg_parse2_true
         test_help_true
         test_help_false
         test_root_run_false
@@ -119,6 +135,40 @@ class UnitTest(unittest.TestCase):
 
         self.args = ArgParser()
         self.args.args_array = {"-c": "config_file", "-d": "config_dir"}
+
+    @mock.patch("server_usage.gen_class.ArgParser")
+    def test_arg_parse2_false(self, mock_arg):
+
+        """Function:  test_arg_parse2_false
+
+        Description:  Test arg_parse2 returns false.
+
+        Arguments:
+
+        """
+
+        self.args.argparse2 = False
+
+        mock_arg.return_value = self.args
+
+        self.assertFalse(server_usage.main())
+
+    @mock.patch("server_usage.gen_libs.help_func")
+    @mock.patch("server_usage.gen_class.ArgParser")
+    def test_arg_parse2_true(self, mock_arg, mock_help):
+
+        """Function:  test_arg_parse2_true
+
+        Description:  Test arg_parse2 returns true.
+
+        Arguments:
+
+        """
+
+        mock_arg.return_value = self.args
+        mock_help.return_value = True
+
+        self.assertFalse(server_usage.main())
 
     @mock.patch("server_usage.gen_libs.help_func")
     @mock.patch("server_usage.gen_class.ArgParser")
