@@ -274,9 +274,10 @@ def main():
     opt_val_list = ["-c", "-d"]
 
     # Process argument list from command line.
-    args = gen_class.ArgParser(sys.argv, opt_val=opt_val_list, do_parse=True)
+    args = gen_class.ArgParser(sys.argv, opt_val=opt_val_list)
 
-    if not gen_libs.help_func(args, __version__, help_message):
+    if args.arg_parse2()                                            \
+       and not gen_libs.help_func(args, __version__, help_message):
         if gen_libs.root_run():
             if args.arg_require(opt_req=opt_req_list)           \
                and args.arg_dir_chk(dir_perms_chk=dir_perms_chk):
