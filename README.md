@@ -163,7 +163,7 @@ Install the project using the procedures in the Installation section.
 
 ```
 cd {Python_Project}/server-usage
-test/unit/server_usage/unit_test_run.sh
+test/unit/server_usage/unit_test_run3.sh
 ```
 
 ### Code coverage:
@@ -224,7 +224,7 @@ chmod 600 configuration.py
 
 ```
 cd {Python_Project}/server-usage
-test/integration/server_usage/integration_test_run.sh
+test/integration/server_usage/integration_test_run3.sh
 ```
 
 ### Code coverage:
