@@ -41,7 +41,8 @@ def capture_mem(mem):
              "uss_mem": p.info["memory_full_info"].uss,
              "per_used": "{p.memory_percent():.2f}"}
             for p in psutil.process_iter(attrs=["name", "memory_full_info"])
-            if p.info["memory_full_info"].uss > mem * 1024 * 1024]
+            if p.info["memory_full_info"] and
+            p.info["memory_full_info"].uss > mem * 1024 * 1024]
 
 
 class UnitTest(unittest.TestCase):

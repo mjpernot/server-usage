@@ -29,7 +29,3 @@ else
     printf "\n\tTest Failure\n"
 fi
 
-echo "Scenario 5:  Write output to Mongo database"
-./server_usage.py -c configuration -d test/blackbox/server_usage/config -n -m
-
-test/blackbox/server_usage/blackbox_test.py mongo

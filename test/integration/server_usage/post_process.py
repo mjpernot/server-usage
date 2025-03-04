@@ -12,7 +12,6 @@
 """
 
 # Libraries and Global Variables
-from __future__ import print_function
 
 # Standard
 import sys
@@ -98,7 +97,6 @@ class UnitTest(unittest.TestCase):
         self.base_dir = "test/integration/server_usage"
         self.test_path = os.path.join(os.getcwd(), self.base_dir)
         self.config_path = os.path.join(self.test_path, "config")
-        self.cfg = gen_libs.load_module("configuration", self.config_path)
 
     def test_raw_print(self):
 
@@ -112,7 +110,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(
-                server_usage.post_process(self.proc_data, self.args, self.cfg))
+                server_usage.post_process(self.proc_data, self.args))
 
     def test_format_print(self):
 
@@ -124,7 +122,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(server_usage.post_process({}, self.args2, self.cfg))
+        self.assertFalse(server_usage.post_process({}, self.args2))
 
 
 if __name__ == "__main__":

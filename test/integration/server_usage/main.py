@@ -12,7 +12,6 @@
 """
 
 # Libraries and Global Variables
-from __future__ import print_function
 
 # Standard
 import sys
@@ -127,7 +126,7 @@ class UnitTest(unittest.TestCase):
 
         self.assertFalse(server_usage.main())
 
-    @mock.patch("server_usage.arg_parser.arg_dir_chk_crt")
+    @mock.patch("server_usage.gen_class.ArgParser.arg_dir_chk")
     def test_arg_require_func(self, mock_arg):
 
         """Function:  test_arg_require_func
@@ -142,7 +141,8 @@ class UnitTest(unittest.TestCase):
 
         sys.argv = self.argv_list
 
-        self.assertFalse(server_usage.main())
+        with gen_libs.no_std_out():
+            self.assertFalse(server_usage.main())
 
     def test_root_run_func(self):
 

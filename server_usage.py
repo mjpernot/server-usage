@@ -128,7 +128,8 @@ def get_proc_mem(mem_threshold=100):
              "uss_mem": p.info["memory_full_info"].uss,
              "per_used": f"{p.memory_percent():.2f}"}
             for p in psutil.process_iter(attrs=["name", "memory_full_info"])
-            if p.info["memory_full_info"].uss > mem_threshold * 1024 * 1024]
+            if p.info["memory_full_info"] and
+            p.info["memory_full_info"].uss > mem_threshold * 1024 * 1024]
 
 
 def post_process(proc_data, args):

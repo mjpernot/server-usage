@@ -11,6 +11,9 @@ Breaking changes
 - Removed mongo insert option.
 - Updated python-lib==4.0.0
 
+### Fixed
+- get_proc_mem: Added check to see if "memory_full_info" exists.
+
 ### Changed
 - Converted strings to f-strings.
 - Documentation changes.

@@ -12,7 +12,6 @@
 """
 
 # Libraries and Global Variables
-from __future__ import print_function
 
 # Standard
 import sys
@@ -23,47 +22,10 @@ import unittest
 sys.path.append(os.getcwd())
 import server_usage                             # pylint:disable=E0401,C0413
 import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import lib.gen_class as gen_class           # pylint:disable=E0401,C0413,R0402
 import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
-
-
-class ArgParser():                                      # pylint:disable=R0903
-
-    """Class:  ArgParser
-
-    Description:  Class stub holder for gen_class.ArgParser class.
-
-    Methods:
-        __init__
-        get_val
-
-    """
-
-    def __init__(self):
-
-        """Method:  __init__
-
-        Description:  Class initialization.
-
-        Arguments:
-
-        """
-
-        self.cmdline = None
-        self.args = {}
-
-    def get_val(self, skey, def_val=None):
-
-        """Method:  get_val
-
-        Description:  Method stub holder for gen_class.ArgParser.get_val.
-
-        Arguments:
-
-        """
-
-        return self.args.get(skey, def_val)
 
 
 class UnitTest(unittest.TestCase):
@@ -94,12 +56,16 @@ class UnitTest(unittest.TestCase):
         self.test_path = os.path.join(os.getcwd(), self.base_dir)
         self.config_path = os.path.join(self.test_path, "config")
         self.cfg = gen_libs.load_module("configuration", self.config_path)
-        self.args = ArgParser()
-        self.args2 = ArgParser()
-        self.args.args_array = {"-c": "configuration", "-d": self.config_path}
-        self.args2.args_array = {
-            "-c": "configuration", "-d": self.config_path, "-n": True,
-            "-m": True}
+        opt_val_list = ["-c", "-d"]
+        argv = [
+            "server_usage.py", "-c", "configuration", "-d", self.config_path]
+        argv2 = [
+            "server_usage.py", "-c", "configuration", "-d", self.config_path,
+            "-n"]
+        self.args = gen_class.ArgParser(argv, opt_val=opt_val_list)
+        self.args.arg_parse2()
+        self.args2 = gen_class.ArgParser(argv2, opt_val=opt_val_list)
+        self.args2.arg_parse2()
 
     def test_print_format(self):
 
