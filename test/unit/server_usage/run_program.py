@@ -22,14 +22,14 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import server_usage
-import lib.gen_libs as gen_libs
-import version
+import server_usage                             # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ArgParser(object):
+class ArgParser():                                      # pylint:disable=R0903
 
     """Class:  ArgParser
 
@@ -52,7 +52,7 @@ class ArgParser(object):
         """
 
         self.cmdline = None
-        self.args = dict()
+        self.args = {}
 
     def get_val(self, skey, def_val=None):
 
@@ -67,7 +67,7 @@ class ArgParser(object):
         return self.args.get(skey, def_val)
 
 
-class ProgramLock(object):
+class ProgramLock():                                    # pylint:disable=R0903
 
     """Class:  ProgramLock
 
@@ -92,7 +92,7 @@ class ProgramLock(object):
         self.flavor = flavor
 
 
-class System(object):
+class System():                                         # pylint:disable=R0903
 
     """Class:  System
 
@@ -190,8 +190,9 @@ class UnitTest(unittest.TestCase):
     @mock.patch("server_usage.get_svr_info")
     @mock.patch("server_usage.gen_libs.load_module")
     @mock.patch("server_usage.gen_class")
-    def test_run_program(self, mock_class, mock_load, mock_info, mock_mem,
-                         mock_proc, mock_post):
+    def test_run_program(                               # pylint:disable=R0913
+            self, mock_class, mock_load, mock_info, mock_mem, mock_proc,
+            mock_post):
 
         """Function:  test_run_program
 
@@ -210,7 +211,7 @@ class UnitTest(unittest.TestCase):
             "tot_mem": 100000000, "mem_used": 80000000, "mem_per": 80}
         mock_proc.return_value = [
             {"pid": 100, "ppid": 10, "proc": "proc_name", "uss_mem": 20000000,
-             "per_used": "%.2f" % 25.15}]
+             "per_used": f"{25.15:.2f}"}]
         mock_post.return_value = True
 
         self.assertFalse(server_usage.run_program(self.args))

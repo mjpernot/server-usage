@@ -19,45 +19,26 @@
 
 # Features:
   * Capture and display any processes that are using memory over the memory threshold setting.
-  * Save the results to a Mongo database collection.
 
 
 # Prerequisites:
 
   * List of Linux packages that need to be installed on the server.
-    - Centos 7 (Running Python 2.7):
-      -> python-pip
-      -> python-devel
-    - Redhat 8 (Running Python 3.6):
-      -> python3-pip
-      -> python3-devel
-      -> gcc
-
-  * FIPS Environment:  If operating in a FIPS 104-2 environment, this package will require at least a minimum of pymongo==3.8.0 or better.  It will also require a manual change to the auth.py module in the pymongo package.  See below for changes to auth.py.  In addition, other modules may require to have the same modification as the auth.py module.  If a stacktrace occurs and it states "= hashlib.md5()" is the problem, then note the module name "= hashlib.md5()" is in and make the same change as in auth.py:  "usedforsecurity=False".
-    - Locate the auth.py file python installed packages on the system in the pymongo package directory.
-    - Edit the file and locate the \_password_digest function.
-    - In the \_password_digest function there is an line that should match: "md5hash = hashlib.md5()".  Change it to "md5hash = hashlib.md5(usedforsecurity=False)".
-    - Lastly, it will require the configuration file entry auth_mech to be set to: SCRAM-SHA-1 or SCRAM-SHA-256.
+    - python3-pip
+    - python3-devel
+    - gcc
 
 
 # Installation:
 
 Install the project using git.
-  * From here on out, any reference to **{Python_Project}** or **PYTHON_PROJECT** replace with the baseline path of the python program.
 
 ```
 git clone git@sc.appdev.proj.coe.ic.gov:JAC-DSXD/server-usage.git
-cd server-usage
 ```
 
 Install/upgrade system modules.
 
-Centos 7 (Running Python 2.7):
-```
-sudo pip install -r requirements.txt --upgrade --trusted-host pypi.appdev.proj.coe.ic.gov
-```
-
-Redhat 8 (Running Python 3.6):
 NOTE: Install as the user that will run the program.
 
 ```
@@ -67,79 +48,20 @@ python -m pip install --user -r requirements3.txt --upgrade --trusted-host pypi.
 
 Install supporting local classes and libraries.
 
-Centos 7 (Running Python 2.7):
-```
-pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
-pip install -r requirements-mongo-lib.txt --target mongo_lib --trusted-host pypi.appdev.proj.coe.ic.gov
-pip install -r requirements-mongo-python-lib.txt --target mongo_lib/lib --trusted-host pypi.appdev.proj.coe.ic.gov
-```
-
-Redhat 8 (Running Python 3.6):
 ```
 python -m pip install -r requirements-python-lib.txt --target lib --trusted-host pypi.appdev.proj.coe.ic.gov
-python -m pip install -r requirements-mongo-lib.txt --target mongo_lib --trusted-host pypi.appdev.proj.coe.ic.gov
-python -m pip install -r requirements-mongo-python-lib.txt --target mongo_lib/lib --trusted-host pypi.appdev.proj.coe.ic.gov
 ```
 
 
 # Configuration:
 
 Make the appropriate changes to the environment.
-  * Make the appropriate changes to connect to a Mongo database.  Only required if saving the results to a Mongo database.
-    - user = "USER"
-    - japd = "PSWORD"
-    - host = "HOST_IP"
-    - name = "HOSTNAME"
-
   * memory_threshold is amount of memory required before the process is recorded.  Value is in Megabytes.
     - memory_threshold = 100
 
-  * Name of database and collection in Mongo.
-    - db = "sysmon"
-    - coll = "mem_usage"
-
-  * Change these entries only if required:
-    - port = 27017
-    - conf_file = None
-    - auth = True
-    - auth_db = "admin"
-    - auth_mech = "SCRAM-SHA-1"
-
-  * Notes for auth_mech configuration entry:
-    - NOTE 1:  SCRAM-SHA-256 only works for Mongodb 4.0 and better.
-    - NOTE 2:  FIPS 140-2 environment requires SCRAM-SHA-1 or SCRAM-SHA-256.
-    - NOTE 3:  MONGODB-CR is not supported in Mongodb 4.0 and better.
-
-  * If connecting to a Mongo replica set, otherwise set to None.
-    - repset = "REPLICA_SET_NAME"
-    - repset_hosts = "HOST_1:PORT, HOST_2:PORT, ..."
-    - db_auth = "AUTHENTICATION_DATABASE"
-
-  * If Mongo is set to use TLS or SSL connections, then one or more of the following entries will need to be completed to connect using TLS or SSL protocols.  Note:  Read the configuration file to determine which entries will need to be
-set.
-    - SSL:
-        -> auth_type = None 
-        -> ssl_client_ca = None
-        -> ssl_client_key = None
-        -> ssl_client_cert = None
-        -> ssl_client_phrase = None
-    - TLS: 
-        -> auth_type = None
-        -> tls_ca_certs = None
-        -> tls_certkey = None
-        -> tls_certkey_phrase = None
-
-  * FIPS Environment for Mongo:  If operating in a FIPS 104-2 environment, this package will require at least a minimum of pymongo==3.8.0 or better.  It will also require a manual change to the auth.py module in the pymongo package.  See below for changes to auth.py.
-    - Locate the auth.py file python installed packages on the system in the pymongo package directory.
-    - Edit the file and locate the "_password_digest" function.
-    - In the "\_password_digest" function there is an line that should match: "md5hash = hashlib.md5()".  Change it to "md5hash = hashlib.md5(usedforsecurity=False)".
-    - Lastly, it will require the Mongo configuration file entry auth_mech to be set to: SCRAM-SHA-1 or SCRAM-SHA-256.
-
 ```
-cd config
-cp configuration.py.TEMPLATE configuration.py
-vim configuration.py
-chmod 600 configuration.py
+cp config/configuration.py.TEMPLATE config/configuration.py
+vim config/configuration.py
 ```
 
 
@@ -148,7 +70,7 @@ chmod 600 configuration.py
   The program has a -h (Help option) that will show display an usage message.  The help message will usually consist of a description, usage, arugments to the program, example, notes about the program, and any known bugs not yet fixed.  To run the help command:
 
 ```
-{Python_Project}/server-usage/server_usage.py -h
+server_usage.py -h
 ```
 
 
@@ -163,13 +85,7 @@ Install the project using the procedures in the Installation section.
 ### Testing:
 
 ```
-cd {Python_Project}/server-usage
-test/unit/server_usage/unit_test_run3.sh
-```
-
-### Code coverage:
-```
-cd {Python_Project}/server-usage
+test/unit/server_usage/unit_test_run.sh
 test/unit/server_usage/code_coverage.sh
 ```
 
@@ -183,54 +99,19 @@ Install the project using the procedures in the Installation section.
 ### Configuration:
 
 Make the appropriate changes to the environment.
-  * Make the appropriate changes to connect to a Mongo database.  Only required if saving the results to a Mongo database.
-    - user = "USER"
-    - japd = "PSWORD"
-    - host = "HOST_IP"
-    - name = "HOSTNAME"
-
   * memory_threshold is amount of memory required before the process is recorded.  Value is in Megabytes.
     - memory_threshold = 100
 
-  * Name of database and collection in Mongo.
-    - db = "sysmon"
-    - coll = "mem_usage"
-
-  * Change these entries only if required:
-    - port = 27017
-    - conf_file = None
-    - auth = True
-    - auth_db = "admin"
-    - auth_mech = "SCRAM-SHA-1"
-
-  * Notes for auth_mech configuration entry:
-    - NOTE 1:  SCRAM-SHA-256 only works for Mongodb 4.0 and better.
-    - NOTE 2:  FIPS 140-2 environment requires SCRAM-SHA-1 or SCRAM-SHA-256.
-    - NOTE 3:  MONGODB-CR is not supported in Mongodb 4.0 and better.
-
-  * If connecting to a Mongo replica set, otherwise set to None.
-    - repset = "REPLICA_SET_NAME"
-    - repset_hosts = "HOST_1:PORT, HOST_2:PORT, ..."
-    - db_auth = "AUTHENTICATION_DATABASE"
-
 ```
-cd test/integration/server_usage/config
-cp ../../../../config/configuration.py.TEMPLATE configuration.py
-vim configuration.py
-chmod 600 configuration.py
+cp config/configuration.py.TEMPLATE test/integration/server_usage/config/configuration.py
+vim test/integration/server_usage/config/configuration.py
 ```
 
 ### Testing:
   * These tests must be run as the root account.
 
 ```
-cd {Python_Project}/server-usage
-test/integration/server_usage/integration_test_run3.sh
-```
-
-### Code coverage:
-```
-cd {Python_Project}/server-usage
+test/integration/server_usage/integration_test_run.sh
 test/integration/server_usage/code_coverage.sh
 ```
 
@@ -244,48 +125,18 @@ Install the project using the procedures in the Installation section.
 ### Configuration:
 
 Make the appropriate changes to the environment.
-  * Make the appropriate changes to connect to a Mongo database.  Only required if saving the results to a Mongo database.
-    - user = "USER"
-    - japd = "PSWORD"
-    - host = "HOST_IP"
-    - name = "HOSTNAME"
-
   * memory_threshold is amount of memory required before the process is recorded.  Value is in Megabytes.
     - memory_threshold = 100
 
-  * Name of database and collection in Mongo.
-    - db = "sysmon"
-    - coll = "mem_usage"
-
-  * Change these entries only if required:
-    - port = 27017
-    - conf_file = None
-    - auth = True
-    - auth_db = "admin"
-    - auth_mech = "SCRAM-SHA-1"
-
-  * Notes for auth_mech configuration entry:
-    - NOTE 1:  SCRAM-SHA-256 only works for Mongodb 4.0 and better.
-    - NOTE 2:  FIPS 140-2 environment requires SCRAM-SHA-1 or SCRAM-SHA-256.
-    - NOTE 3:  MONGODB-CR is not supported in Mongodb 4.0 and better.
-
-  * If connecting to a Mongo replica set, otherwise set to None.
-    - repset = "REPLICA_SET_NAME"
-    - repset_hosts = "HOST_1:PORT, HOST_2:PORT, ..."
-    - db_auth = "AUTHENTICATION_DATABASE"
-
 ```
-cd test/blackbox/server_usage/config
-cp ../../../../config/configuration.py.TEMPLATE configuration.py
-vim configuration.py
-chmod 600 configuration.py
+cp config/configuration.py.TEMPLATE test/blackbox/server_usage/config/configuration.py
+vim test/blackbox/server_usage/config/configuration.py
 ```
 
 ### Testing:
   * This test must be run as the root account.
 
 ```
-cd {Python_Project}/server-usage
 test/blackbox/server_usage/blackbox_test.sh
 ```
 
