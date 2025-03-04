@@ -20,13 +20,13 @@ import unittest
 
 # Local
 sys.path.append(os.getcwd())
-import server_usage
-import version
+import server_usage                             # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class System(object):
+class System():                                         # pylint:disable=R0903
 
     """Class:  System
 

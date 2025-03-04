@@ -22,8 +22,8 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import server_usage
-import version
+import server_usage                             # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
