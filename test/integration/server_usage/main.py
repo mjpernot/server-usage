@@ -75,8 +75,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        cmdline = gen_libs.get_inst(sys)
-        cmdline.argv = self.argv_list
+        sys.argv = self.argv_list
 
         with gen_libs.no_std_out():
             self.assertFalse(server_usage.main())
@@ -91,9 +90,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        cmdline = gen_libs.get_inst(sys)
         self.argv_list.append("-n")
-        cmdline.argv = self.argv_list
+        sys.argv = self.argv_list
 
         self.assertFalse(server_usage.main())
 
@@ -107,8 +105,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        cmdline = gen_libs.get_inst(sys)
-        cmdline.argv = self.argv_list
+        sys.argv = self.argv_list
 
         with gen_libs.no_std_out():
             self.assertFalse(server_usage.main())
@@ -126,8 +123,7 @@ class UnitTest(unittest.TestCase):
 
         mock_run.return_value = True
 
-        cmdline = gen_libs.get_inst(sys)
-        cmdline.argv = self.argv_list
+        sys.argv = self.argv_list
 
         self.assertFalse(server_usage.main())
 
@@ -144,8 +140,7 @@ class UnitTest(unittest.TestCase):
 
         mock_arg.return_value = True
 
-        cmdline = gen_libs.get_inst(sys)
-        cmdline.argv = self.argv_list
+        sys.argv = self.argv_list
 
         self.assertFalse(server_usage.main())
 
@@ -174,9 +169,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        cmdline = gen_libs.get_inst(sys)
         self.argv_list.append("-v")
-        cmdline.argv = self.argv_list
+        sys.argv = self.argv_list
 
         with gen_libs.no_std_out():
             self.assertFalse(server_usage.main())
