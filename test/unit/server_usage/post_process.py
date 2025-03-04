@@ -92,7 +92,6 @@ class UnitTest(unittest.TestCase):
         """
 
         self.proc_data = {"Data": "String"}
-        cfg = collections.namedtuple("Cfg", "db coll")
         self.args = ArgParser()
         self.args2 = ArgParser()
         self.args3 = ArgParser()
