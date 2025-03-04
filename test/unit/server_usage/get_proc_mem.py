@@ -22,13 +22,13 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import server_usage
-import version
+import server_usage                             # pylint:disable=E0401,C0413
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class PSUtil(object):
+class PSUtil():
 
     """Class:  PSUtil
 
@@ -42,7 +42,8 @@ class PSUtil(object):
 
     """
 
-    def __init__(self, name, pid, p_pid, uss, percent):
+    def __init__(                                       # pylint:disable=R0913
+            self, name, pid, p_pid, uss, percent):
 
         """Method:  __init__
 

@@ -6,14 +6,13 @@
     Description:  Monitor the memory usage for processes on a Linux server.
 
     Usage:
-        server_usage.py -c file -d path [-n | -m | -f] [-v | -h]
+        server_usage.py -c file -d path [-n | -f] [-v | -h]
 
     Arguments:
         -c configuration => Configuration file.  Required argument.
         -d path => Directory path for "-c" option.  Required argument.
 
         -n => Do not print results to standard out.
-        -m => Save results to Mongo database.
         -f => Format the output to standard out.
 
         -v => Display version of this program.
@@ -22,65 +21,8 @@
         NOTE 1:  -v and -h overrides all other options.
 
     Notes:
-        Mongo configuration file format (config/mongo.py.TEMPLATE).
-        The configuration file format for the Mongo connection used for
-        inserting data into a database.
-
-        There are two ways to connect methods:  single Mongo database or a
-        Mongo replica set.
-
-            Single Configuration file for Mongo Database Server.
-            user = "USER"
-            japd = "PSWORD"
-            host = "HOST_IP"
-            name = "HOSTNAME"
-            port = 27017
-            conf_file = None
-
+        Configuration file format (config/condiguration.py.TEMPLATE).
             memory_threshold = 100
-            db = "sysmon"
-
-            coll = "mem_usage"
-            auth = True
-            auth_db = "admin"
-            auth_mech = "SCRAM-SHA-1"
-
-            Replica set connection:  Same format as above, but with these
-                additional entries at the end of the configuration file.  By
-                default all these entries are set to None to represent not
-                connecting to a replica set.
-
-            repset = "REPLICA_SET_NAME"
-            repset_hosts = "HOST1:PORT, HOST2:PORT, [...]"
-            db_auth = "AUTHENTICATION_DATABASE"
-
-            Note:  If using SSL connections then set one or more of the
-                following entries.  This will automatically enable SSL
-                connections. Below are the configuration settings for SSL
-                connections.  See configuration file for details on each entry:
-
-            ssl_client_ca = None
-            ssl_client_key = None
-            ssl_client_cert = None
-            ssl_client_phrase = None
-
-            FIPS Environment for Mongo:  If operating in a FIPS 104-2
-                environment, this package will require at least a minimum of
-                pymongo==3.8.0 or better.  It will also require a manual change
-                to the auth.py module in the pymongo package.  See below for
-                changes to auth.py.  In addition, other modules may require to
-                have the same modification as the auth.py module.  If a
-                stacktrace occurs and it states "= hashlib.md5()" is the
-                problem, then note the module name "= hashlib.md5()" is in and
-                make the same change as in auth.py:  "usedforsecurity=False".
-            - Locate the auth.py file python installed packages on the system
-                in the pymongo package directory.
-            - Edit the file and locate the "_password_digest" function.
-            - In the "_password_digest" function there is an line that should
-                match: "md5hash = hashlib.md5()".  Change it to
-                "md5hash = hashlib.md5(usedforsecurity=False)".
-            - Lastly, it will require the Mongo configuration file entry
-                auth_mech to be set to: SCRAM-SHA-1 or SCRAM-SHA-256.
 
         Configuration modules -> Name is runtime dependent as it can be used to
             connect to different databases with different names.
@@ -91,8 +33,6 @@
 """
 
 # Libraries and Global Variables
-from __future__ import print_function
-from __future__ import absolute_import
 
 # Standard
 import sys
@@ -102,13 +42,11 @@ import psutil
 try:
     from .lib import gen_libs
     from .lib import gen_class
-    from .mongo_lib import mongo_libs
     from . import version
 
 except (ValueError, ImportError) as err:
-    import lib.gen_libs as gen_libs
-    import lib.gen_class as gen_class
-    import mongo_lib.mongo_libs as mongo_libs
+    import lib.gen_libs as gen_libs                     # pylint:disable=R0402
+    import lib.gen_class as gen_class                   # pylint:disable=R0402
     import version
 
 __version__ = version.__version__
@@ -188,12 +126,12 @@ def get_proc_mem(mem_threshold=100):
 
     return [{"pid": p.pid, "ppid": p.ppid(), "proc": p.info["name"],
              "uss_mem": p.info["memory_full_info"].uss,
-             "per_used": "%.2f" % p.memory_percent()}
+             "per_used": f"{p.memory_percent():.2f}"}
             for p in psutil.process_iter(attrs=["name", "memory_full_info"])
             if p.info["memory_full_info"].uss > mem_threshold * 1024 * 1024]
 
 
-def post_process(proc_data, args, cfg):
+def post_process(proc_data, args):
 
     """Function:  post_process
 
@@ -203,7 +141,6 @@ def post_process(proc_data, args, cfg):
     Arguments:
         (input) proc_data -> Dictionary of process data
         (input) args -> ArgParser class instance
-        (input) cfg -> Configuration module settings
 
     """
 
@@ -215,12 +152,6 @@ def post_process(proc_data, args, cfg):
 
         else:
             print(proc_data)
-
-    if args.arg_exist("-m"):
-        status = mongo_libs.ins_doc(cfg, cfg.db, cfg.coll, proc_data)
-
-        if not status[0]:
-            print("Error: Mongo connection -> %s" % (status[1]))
 
 
 def run_program(args):
@@ -244,12 +175,11 @@ def run_program(args):
         proc_data = get_svr_info(server)
         proc_data.update(get_svr_mem())
         proc_data["processes"] = get_proc_mem(cfg.memory_threshold)
-        post_process(proc_data, args, cfg)
+        post_process(proc_data, args)
         del prog_lock
 
     except gen_class.SingleInstanceException:
-        print("WARNING:  server_usage lock in place for: %s"
-              % (server.host_name))
+        print(f"WARNING:  server_usage lock in place for: {server.host_name}")
 
 
 def main():

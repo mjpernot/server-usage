@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [2.0.0] - 2025-03-04
+Breaking changes
+
+- Removed support for Python 2.7.
+- Removed mongo insert option.
+- Updated python-lib==4.0.0
+
+### Changed
+- Converted strings to f-strings.
+- Documentation changes.
+
+
 ## [1.2.6] - 2024-11-19
 - Updated python-lib to v3.0.8
 - Updated mongo-lib to v4.3.4

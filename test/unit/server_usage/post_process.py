@@ -22,14 +22,14 @@ import mock
 
 # Local
 sys.path.append(os.getcwd())
-import server_usage
-import lib.gen_libs as gen_libs
-import version
+import server_usage                             # pylint:disable=E0401,C0413
+import lib.gen_libs as gen_libs             # pylint:disable=E0401,C0413,R0402
+import version                                  # pylint:disable=E0401,C0413
 
 __version__ = version.__version__
 
 
-class ArgParser(object):
+class ArgParser():                                      # pylint:disable=R0903
 
     """Class:  ArgParser
 
@@ -51,7 +51,7 @@ class ArgParser(object):
 
         """
 
-        self.args_array = dict()
+        self.args_array = {}
 
     def arg_exist(self, arg):
 
@@ -63,7 +63,7 @@ class ArgParser(object):
 
         """
 
-        return True if arg in self.args_array else False
+        return arg in self.args_array
 
 
 class UnitTest(unittest.TestCase):
@@ -74,14 +74,10 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
-        test_mongo_failed
-        test_mongo_connect
         test_print_format
         test_print_raw
         test_suppress_false
         test_suppress_true
-        test_mongo_false
-        test_mongo_true
 
     """
 
@@ -97,7 +93,6 @@ class UnitTest(unittest.TestCase):
 
         self.proc_data = {"Data": "String"}
         cfg = collections.namedtuple("Cfg", "db coll")
-        self.cfg = cfg("database", "collection")
         self.args = ArgParser()
         self.args2 = ArgParser()
         self.args3 = ArgParser()
@@ -105,40 +100,6 @@ class UnitTest(unittest.TestCase):
         self.args.args_array = {"-n": True, "-m": True}
         self.args2.args_array = {"-f": True}
         self.args4.args_array = {"-n": True}
-
-    @mock.patch("server_usage.mongo_libs.ins_doc")
-    def test_mongo_failed(self, mock_mongo):
-
-        """Function:  test_mongo_failed
-
-        Description:  Test with failed connection to Mongo.
-
-        Arguments:
-
-        """
-
-        mock_mongo.return_value = (False, "Connection Failure")
-
-        with gen_libs.no_std_out():
-            self.assertFalse(
-                server_usage.post_process(
-                    self.proc_data, self.args, self.cfg))
-
-    @mock.patch("server_usage.mongo_libs.ins_doc")
-    def test_mongo_connect(self, mock_mongo):
-
-        """Function:  test_mongo_connect
-
-        Description:  Test with successful connection to Mongo.
-
-        Arguments:
-
-        """
-
-        mock_mongo.return_value = (True, None)
-
-        self.assertFalse(
-            server_usage.post_process(self.proc_data, self.args, self.cfg))
 
     @mock.patch("server_usage.gen_libs.display_data")
     def test_print_format(self, mock_display):
@@ -153,8 +114,7 @@ class UnitTest(unittest.TestCase):
 
         mock_display.return_value = True
 
-        self.assertFalse(
-            server_usage.post_process(self.proc_data, self.args2, self.cfg))
+        self.assertFalse(server_usage.post_process(self.proc_data, self.args2))
 
     def test_print_raw(self):
 
@@ -168,8 +128,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(
-                server_usage.post_process(
-                    self.proc_data, self.args3, self.cfg))
+                server_usage.post_process(self.proc_data, self.args3))
 
     def test_suppress_false(self):
 
@@ -183,8 +142,7 @@ class UnitTest(unittest.TestCase):
 
         with gen_libs.no_std_out():
             self.assertFalse(
-                server_usage.post_process(
-                    self.proc_data, self.args3, self.cfg))
+                server_usage.post_process(self.proc_data, self.args3))
 
     def test_suppress_true(self):
 
@@ -196,37 +154,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(
-            server_usage.post_process(self.proc_data, self.args4, self.cfg))
-
-    def test_mongo_false(self):
-
-        """Function:  test_mongo_false
-
-        Description:  Test with mongo option set to false.
-
-        Arguments:
-
-        """
-
-        self.assertFalse(
-            server_usage.post_process(self.proc_data, self.args4, self.cfg))
-
-    @mock.patch("server_usage.mongo_libs.ins_doc")
-    def test_mongo_true(self, mock_mongo):
-
-        """Function:  test_mongo_true
-
-        Description:  Test with mongo option set to true.
-
-        Arguments:
-
-        """
-
-        mock_mongo.return_value = (True, None)
-
-        self.assertFalse(
-            server_usage.post_process(self.proc_data, self.args, self.cfg))
+        self.assertFalse(server_usage.post_process(self.proc_data, self.args4))
 
 
 if __name__ == "__main__":
