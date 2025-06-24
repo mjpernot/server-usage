@@ -72,7 +72,7 @@ class UnitTest(unittest.TestCase):
 
     Methods:
         setUp
-        test_raw_print
+        test_suppress_print
         test_format_print
         tearDown
 
@@ -92,25 +92,24 @@ class UnitTest(unittest.TestCase):
         self.args = ArgParser()
         self.args2 = ArgParser()
         self.args3 = ArgParser()
-        self.args2.args_array = {"-f": True}
-        self.args3.args_array = {"-n": True, "-m": True}
+        self.args2.args_array = {"-r": True}
+        self.args3.args_array = {"-n": True}
         self.base_dir = "test/integration/server_usage"
         self.test_path = os.path.join(os.getcwd(), self.base_dir)
         self.config_path = os.path.join(self.test_path, "config")
 
-    def test_raw_print(self):
+    def test_suppress_print(self):
 
-        """Function:  test_raw_print
+        """Function:  test_suppress_print
 
-        Description:  Test with printing unformatted data.
+        Description:  Test with  suppressing printing data.
 
         Arguments:
 
         """
 
-        with gen_libs.no_std_out():
-            self.assertFalse(
-                server_usage.post_process(self.proc_data, self.args))
+        self.assertFalse(
+            server_usage.post_process(self.proc_data, self.args3))
 
     def test_format_print(self):
 
@@ -122,7 +121,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.assertFalse(server_usage.post_process({}, self.args2))
+        with gen_libs.no_std_out():
+            self.assertFalse(server_usage.post_process({}, self.args2))
 
 
 if __name__ == "__main__":
