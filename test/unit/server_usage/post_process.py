@@ -198,11 +198,12 @@ class UnitTest(unittest.TestCase):
 
         """
 
+        self.path = "path/to/open"
         self.proc_data = {"Data": "String"}
         self.args = ArgParser()
         self.args.args_array["-n"] = True
         self.args2 = ArgParser()
-        self.outfile = "path/to/open"
+        self.outfile = self.path
         self.mail = MailTest("toaddr")
 
     @mock.patch("server_usage.gen_libs.write_file",
@@ -217,7 +218,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args.args_array["-o"] = "path/to/open"
+        self.args.args_array["-o"] = self.path
         self.args.args_array["-m"] = "w"
 
         self.assertFalse(server_usage.post_process(self.proc_data, self.args))
@@ -234,7 +235,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args.args_array["-o"] = "path/to/open"
+        self.args.args_array["-o"] = self.path
         self.args.args_array["-m"] = "w"
 
         self.assertFalse(server_usage.post_process(self.proc_data, self.args))
@@ -251,7 +252,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args.args_array["-o"] = "path/to/open"
+        self.args.args_array["-o"] = self.path
         self.args.args_array["-m"] = "w"
         self.args.args_array["-r"] = True
 
@@ -273,7 +274,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args.args_array["-o"] = "path/to/open"
+        self.args.args_array["-o"] = self.path
         self.args.args_array["-m"] = "a"
 
         self.assertFalse(server_usage.post_process(self.proc_data, self.args))
@@ -290,7 +291,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args.args_array["-o"] = "path/to/open"
+        self.args.args_array["-o"] = self.path
         self.args.args_array["-m"] = "a"
 
         self.assertFalse(server_usage.post_process(self.proc_data, self.args))
@@ -307,7 +308,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args.args_array["-o"] = "path/to/open"
+        self.args.args_array["-o"] = self.path
         self.args.args_array["-m"] = "a"
         self.args.args_array["-r"] = True
 
@@ -329,7 +330,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args.args_array["-o"] = "path/to/open"
+        self.args.args_array["-o"] = self.path
 
         self.assertFalse(server_usage.post_process(self.proc_data, self.args))
 
@@ -345,7 +346,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args.args_array["-o"] = "path/to/open"
+        self.args.args_array["-o"] = self.path
 
         self.assertFalse(server_usage.post_process(self.proc_data, self.args))
 
@@ -361,7 +362,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args.args_array["-o"] = "path/to/open"
+        self.args.args_array["-o"] = self.path
         self.args.args_array["-r"] = True
 
         assert open(                            # pylint:disable=R1732,W1514
