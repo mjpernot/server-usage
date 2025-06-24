@@ -511,7 +511,7 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args.args_array["-k"] = 4
+        self.args2.args_array["-k"] = 4
 
         with gen_libs.no_std_out():
             self.assertFalse(
@@ -527,8 +527,8 @@ class UnitTest(unittest.TestCase):
 
         """
 
-        self.args.args_array["-r"] = True
-        self.args.args_array["-k"] = 4
+        self.args2.args_array["-r"] = True
+        self.args2.args_array["-k"] = 4
 
         with gen_libs.no_std_out():
             self.assertFalse(
