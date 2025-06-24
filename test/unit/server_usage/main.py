@@ -39,6 +39,9 @@ class ArgParser():
         arg_dir_chk
         arg_require
         arg_parse2
+        arg_cond_req_or
+        arg_cond_req
+        arg_file_chk
 
     """
 
@@ -58,6 +61,11 @@ class ArgParser():
         self.opt_req2 = True
         self.dir_perms_chk = None
         self.dir_perms_chk2 = True
+        self.opt_con_req = None
+        self.opt_con_req2 = True
+        self.file_perm_chk = None
+        self.file_crt = None
+        self.arg_file_chk2 = True
         self.argparse2 = True
 
     def arg_dir_chk(self, dir_perms_chk):
@@ -100,6 +108,35 @@ class ArgParser():
 
         return self.argparse2
 
+    def arg_cond_req(self, opt_con_req):
+
+        """Method:  arg_cond_req
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_cond_req.
+
+        Arguments:
+
+        """
+
+        self.opt_con_req = opt_con_req
+
+        return self.opt_con_req2
+
+    def arg_file_chk(self, file_perm_chk, file_crt):
+
+        """Method:  arg_file_chk
+
+        Description:  Method stub holder for gen_class.ArgParser.arg_file_chk.
+
+        Arguments:
+
+        """
+
+        self.file_perm_chk = file_perm_chk
+        self.file_crt = file_crt
+
+        return self.arg_file_chk2
+
 
 class UnitTest(unittest.TestCase):
 
@@ -117,6 +154,10 @@ class UnitTest(unittest.TestCase):
         test_root_run_true
         test_require_false
         test_require_true
+        test_arg_cond_false
+        test_arg_cond_true
+        test_arg_file_false
+        test_arg_file_true
         test_dir_chk_crt_false
         test_dir_chk_crt_true
         test_run_program
@@ -272,6 +313,86 @@ class UnitTest(unittest.TestCase):
         """Function:  test_require_true
 
         Description:  Test with arg_require returns True.
+
+        Arguments:
+
+        """
+
+        self.args.opt_con_req2 = False
+
+        mock_lib.help_func.return_value = False
+        mock_lib.root_run.return_value = True
+        mock_arg.return_value = self.args
+
+        self.assertFalse(server_usage.main())
+
+    @mock.patch("server_usage.gen_class.ArgParser")
+    @mock.patch("server_usage.gen_libs")
+    def test_arg_cond_false(self, mock_lib, mock_arg):
+
+        """Function:  test_arg_cond_false
+
+        Description:  Test arg_cond_req if returns false.
+
+        Arguments:
+
+        """
+
+        self.args.opt_con_req2 = False
+
+        mock_lib.help_func.return_value = False
+        mock_lib.root_run.return_value = True
+        mock_arg.return_value = self.args
+
+        self.assertFalse(server_usage.main())
+
+    @mock.patch("server_usage.gen_class.ArgParser")
+    @mock.patch("server_usage.gen_libs")
+    def test_arg_cond_true(self, mock_lib, mock_arg):
+
+        """Function:  test_arg_cond_true
+
+        Description:  Test arg_cond_req if returns true.
+
+        Arguments:
+
+        """
+
+        self.args.arg_file_chk2 = False
+
+        mock_lib.help_func.return_value = False
+        mock_lib.root_run.return_value = True
+        mock_arg.return_value = self.args
+
+        self.assertFalse(server_usage.main())
+
+    @mock.patch("server_usage.gen_class.ArgParser")
+    @mock.patch("server_usage.gen_libs")
+    def test_arg_file_false(self, mock_lib, mock_arg):
+
+        """Function:  test_arg_file_false
+
+        Description:  Test arg_file_chk if returns false.
+
+        Arguments:
+
+        """
+
+        self.args.arg_file_chk2 = False
+
+        mock_lib.help_func.return_value = False
+        mock_lib.root_run.return_value = True
+        mock_arg.return_value = self.args
+
+        self.assertFalse(server_usage.main())
+
+    @mock.patch("server_usage.gen_class.ArgParser")
+    @mock.patch("server_usage.gen_libs")
+    def test_arg_file_true(self, mock_lib, mock_arg):
+
+        """Function:  test_arg_file_true
+
+        Description:  Test arg_file_chk if returns true.
 
         Arguments:
 

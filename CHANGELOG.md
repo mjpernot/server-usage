@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on "Keep a Changelog".  This project adheres to Semantic Versioning.
 
 
+## [3.0.0] - 2025-06-24
+- Updated python-lib to v4.0.2
+- Removed the -f option.
+- Added ability to write to file, expand JSON objects and email out output.
+
+### Changed
+- main: Added -r, -k, -e, -s, -u, -o and -m options, added additional ArgParser checks; arg_cond_req and arg_file_chk.
+- post_process: Removed -f option, add ability to email output, write data to a file and expand JSON objects.
+
+
 ## [2.0.0] - 2025-03-04
 Breaking changes
 
