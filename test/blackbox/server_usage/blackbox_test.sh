@@ -23,7 +23,7 @@ echo "Scenario 3:  Write output to standard out in JSON format"
 test/blackbox/server_usage/blackbox_test.py json test/blackbox/server_usage/out/test.out
 
 echo "Scenario 4:  Write output to standard out in formatted report"
-if [ "$(./server_usage.py -c configuration -d test/blackbox/server_usage/config -f | wc -l)" -gt 5 ] ; then
+if [ "$(./server_usage.py -c configuration -d test/blackbox/server_usage/config | wc -l)" -eq 1 ] ; then
     printf "\n\tTest Successful\n"
 else
     printf "\n\tTest Failure\n"

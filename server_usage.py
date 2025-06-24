@@ -6,14 +6,26 @@
     Description:  Monitor the memory usage for processes on a Linux server.
 
     Usage:
-        server_usage.py -c file -d path [-n | -f] [-v | -h]
+        server_usage.py -c file -d path
+            [-n] [-r [-k N]] [-o dir_path/file [-m a|w]]
+            [-e to_email [to_email2 ...] [-s subject_line] [-u] [-k N]]
+            [-v | -h]
 
     Arguments:
-        -c configuration => Configuration file.  Required argument.
-        -d path => Directory path for "-c" option.  Required argument.
-
-        -n => Do not print results to standard out.
-        -f => Format the output to standard out.
+        -c configuration => Configuration file.
+        -d path => Directory path for "-c" option.
+        -n => Suppress standard out.
+        -r => Expand the JSON format.
+            -k N => Indentation for expanded JSON format.
+        -e to_email_address(es) => Enables emailing and sends output to one or
+                more email addresses.  Email addresses are delimited by a
+                space.
+            -s subject_line => Subject line of email.
+            -u => Override the default mail command and use mailx.
+            -k N => Indentation for expanded JSON format.
+        -o path/file => Directory path and file name for output.
+            -m a|w => Append or write to output to output file. Default is
+                write.
 
         -v => Display version of this program.
         -h => Help and usage message.
@@ -36,7 +48,13 @@
 
 # Standard
 import sys
+import pprint
 import psutil
+
+try:
+    import simplejson as json
+except ImportError:
+    import json
 
 # Local
 try:
@@ -146,13 +164,29 @@ def post_process(proc_data, args):
     """
 
     proc_data = dict(proc_data)
+    cfg = {"indent": args.get_val("-k", def_val=4)} if args.arg_exist("-k") \
+        else {}
 
-    if not args.arg_exist("-n"):
-        if args.arg_exist("-f"):
-            gen_libs.display_data(proc_data)
+    if args.arg_exist("-e"):
+        subj = args.get_val("-s", def_val="Server_Usage")
+        mail = gen_class.setup_mail(args.get_val("-e"), subj=subj)
+        mail.add_2_msg(json.dumps(proc_data, **cfg))
+        mail.send_mail(use_mailx=args.arg_exist("-u"))
 
-        else:
-            print(proc_data)
+    if args.arg_exist("-o") and args.arg_exist("-r"):
+        with open(args.get_val("-o"), mode=args.get_val("-m", def_val="w"),
+                  encoding="UTF-8") as ofile:
+            pprint.pprint(proc_data, stream=ofile, **cfg)
+
+    elif args.arg_exist("-o"):
+        gen_libs.write_file(
+            args.get_val("-o"), args.get_val("-m", def_val="w"), proc_data)
+
+    if not args.arg_exist("-n") and args.arg_exist("-r"):
+        pprint.pprint(proc_data, **cfg)
+
+    elif not args.arg_exist("-n"):
+        print(proc_data)
 
 
 def run_program(args):
@@ -192,6 +226,10 @@ def main():
 
     Variables:
         dir_perms_chk -> contains directories and their octal permissions
+        file_perm_chk -> file check options with their perms in octal
+        file_crt -> contains options which require files to be created
+        opt_con_req_list -> contains the options that require other options
+        opt_multi_list -> contains the options that will have multiple values
         opt_req_list -> contains options that are required for the program
         opt_val_list -> contains options which require values
 
@@ -201,16 +239,24 @@ def main():
     """
 
     dir_perms_chk = {"-d": 5}
+    file_perm_chk = {"-o": 6}
+    file_crt = ["-o"]
+    opt_con_req_list = {"-s": ["-e"], "-u": ["-e"], "-m": ["-o"], "-k": ["-r"]}
+    opt_multi_list = ["-e", "-s"]
     opt_req_list = ["-c", "-d"]
-    opt_val_list = ["-c", "-d"]
+    opt_val_list = ["-c", "-d", "-o", "-e", "-s", "-m", "-k"]
 
     # Process argument list from command line.
-    args = gen_class.ArgParser(sys.argv, opt_val=opt_val_list)
+    args = gen_class.ArgParser(
+        sys.argv, opt_val=opt_val_list, multi_val=opt_multi_list)
 
     if args.arg_parse2()                                            \
        and not gen_libs.help_func(args, __version__, help_message):
         if gen_libs.root_run():
-            if args.arg_require(opt_req=opt_req_list)           \
+            if args.arg_require(opt_req=opt_req_list)                   \
+               and args.arg_cond_req(opt_con_req=opt_con_req_list)      \
+               and args.arg_file_chk(
+                   file_perm_chk=file_perm_chk, file_crt=file_crt)      \
                and args.arg_dir_chk(dir_perms_chk=dir_perms_chk):
                 run_program(args)
 
