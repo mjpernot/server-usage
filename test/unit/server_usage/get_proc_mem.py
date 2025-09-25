@@ -42,7 +42,7 @@ class PSUtil():
 
     """
 
-    def __init__(                                       # pylint:disable=R0913
+    def __init__(                               # pylint:disable=R0913,R0917
             self, name, pid, p_pid, uss, percent):
 
         """Method:  __init__

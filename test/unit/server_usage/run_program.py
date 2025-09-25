@@ -190,7 +190,7 @@ class UnitTest(unittest.TestCase):
     @mock.patch("server_usage.get_svr_info")
     @mock.patch("server_usage.gen_libs.load_module")
     @mock.patch("server_usage.gen_class")
-    def test_run_program(                               # pylint:disable=R0913
+    def test_run_program(                       # pylint:disable=R0913,R0917
             self, mock_class, mock_load, mock_info, mock_mem, mock_proc,
             mock_post):
 
